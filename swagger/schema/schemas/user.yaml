@@ -1,0 +1,25 @@
+components:
+  schemas:
+    User:
+      type: object
+      description: User Schema
+      properties:
+        user_id:
+          type: integer
+          readOnly: true
+        account_id:
+          type: string
+          description: this id can modify by user
+        email:
+          type: string
+        display_name:
+          type: string
+        introduction:
+          type: string
+        icon_url:
+          type: string
+          description: icon url
+      required:
+        - account_id
+        - email
+        - display_name

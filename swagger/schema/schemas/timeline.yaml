@@ -1,0 +1,13 @@
+components:
+  schemas:
+    Timeline:
+      type: object
+      description: Post Schema
+      properties:
+        - posts:
+            type: array
+            items:
+              $ref: "#/components/schemas/Post"
+        - has_next:
+            type: boolean
+            description: whether there is next page
