@@ -1,0 +1,41 @@
+components:
+  schemas:
+    Post:
+      type: object
+      description: Post Schema
+      properties:
+        - location:
+            type: string
+            description: where you drunk coffee
+        - origin:
+            type: string
+            description: where coffee bean from
+        - way_to_brew:
+            type: string
+            description: how to brew
+        - roast_level:
+            type: enum
+            description: roast level
+            enum:
+              - light
+              - cinnamon
+              - medium
+              - high
+              - city
+              - full_city
+              - french
+              - italian
+        - temperature:
+            type: integer
+            description: temperature to brew
+        - grams_of_coffee:
+            type: integer
+            description: grams of coffee
+        - grams_of_water:
+            type: integer
+            description: grams of water
+        - grind_size:
+            type: integer
+            description: how fine the coffee is ground
+        required:
+          - origin

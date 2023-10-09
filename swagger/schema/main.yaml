@@ -1,0 +1,213 @@
+openapi: 3.0.0
+info:
+  title: hottocoffee
+  version: '0.0.1'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/user/{account_id}':
+    description: 'user information'
+    get:
+      parameters:
+        - in: path
+          name: account_id
+          schema:
+            type: integer
+          required: true
+      summary: get user information by account_id
+      tags: [user]
+      description: get user information by account_id
+      responses:
+        '200':
+          description: success to get user information
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/user.yaml#/components/schemas/User'
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/error.yaml#/components/schemas/Error'
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/error.yaml#/components/schemas/Error'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/error.yaml#/components/schemas/Error'
+    post:
+      tags: [user]
+      summary: register new user
+      description: register new user
+      responses:
+        '201':
+          description: success to register new user
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/user.yaml#/components/schemas/User'
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/error.yaml#/components/schemas/Error'
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/error.yaml#/components/schemas/Error'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/error.yaml#/components/schemas/Error'
+    put:
+      tags: [user]
+      summary: update user information
+      description: update user information
+      responses:
+        '200':
+          description: success to update user information
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/user.yaml#/components/schemas/User'
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/error.yaml#/components/schemas/Error'
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/error.yaml#/components/schemas/Error'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/error.yaml#/components/schemas/Error'
+
+  '/post':
+    description: 'post information'
+    get:
+      summary: get post information
+      tags: [post]
+      description: get post information
+      responses:
+        '200':
+          description: success to get post information
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/post.yaml#/components/schemas/Post'
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/error.yaml#/components/schemas/Error'
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/error.yaml#/components/schemas/Error'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/error.yaml#/components/schemas/Error'
+  '/post/{post_id}':
+    delete:
+      summary: delete post information
+      tags: [post]
+      description: delete post information
+      responses:
+        '200':
+          description: success to delete post information
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/success.yaml#/components/schemas/Success'
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/error.yaml#/components/schemas/Error'
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/error.yaml#/components/schemas/Error'
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/error.yaml#/components/schemas/Error'
+    '/timeline':
+      get:
+        summary: get timeline
+        tags: [timeline]
+        description: get timeline
+          parameters:
+            query:
+              type: string
+              name: lower_post_id
+              description: lower post id
+              required: false
+              example: 1
+            query:
+              type: string
+              name: upper_post_id
+              description: upper post id
+              required: false
+              example: 10
+        responses:
+          '200':
+            description: success to get timeline
+            content:
+              application/json:
+                schema:
+                  $ref: './schemas/timeline.yaml#/components/schemas/Timeline'
+          '400':
+            description: bad request
+            content:
+              application/json:
+                schema:
+                  $ref: './schemas/error.yaml#/components/schemas/Error'
+          '404':
+            description: not found
+            content:
+              application/json:
+                schema:
+                  $ref: './schemas/error.yaml#/components/schemas/Error'
+          '500':
+            description: internal server error
+            content:
+              application/json:
+                schema:
+                  $ref: './schemas/error.yaml#/components/schemas/Error'
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/batch.yaml#/components/schemas/BatchCreate'
