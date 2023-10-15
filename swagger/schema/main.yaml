@@ -29,6 +29,11 @@ paths:
             application/json:
               schema:
                 $ref: './schemas/error.yaml#/components/schemas/Internal_Server_Error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/user.yaml#/components/schemas/User'
 
   '/user/{account_id}':
     description: 'user information'
@@ -103,6 +108,11 @@ paths:
       summary: post information
       tags: [post]
       description: Post coffee information user drank
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/post.yaml#/components/schemas/Post'
       responses:
         '200':
           description: Success to post information

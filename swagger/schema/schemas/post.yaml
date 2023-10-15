@@ -4,6 +4,15 @@ components:
       type: object
       description: Post Schema
       properties:
+        post_id:
+          type: integer
+          readOnly: true
+        user:
+          type: object
+          allOf:
+            - $ref: './user.yaml#/components/schemas/User'
+            - type: object
+          readOnly: true
         location:
           type: string
           description: where you drank coffee
