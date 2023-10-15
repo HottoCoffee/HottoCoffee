@@ -5,6 +5,31 @@ info:
 servers:
   - url: 'http://localhost:3000'
 paths:
+  '/user':
+    post:
+      tags: [user]
+      summary: register new user
+      description: Register new user.
+      responses:
+        '201':
+          description: Success to register new user
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/user.yaml#/components/schemas/User'
+        '400':
+          description: Bad request. This response will be reuturned if posted form has some validation errors.
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/error.yaml#/components/schemas/Bad_Request'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/error.yaml#/components/schemas/Internal_Server_Error'
+
   '/user/{account_id}':
     description: 'user information'
     get:
@@ -12,131 +37,122 @@ paths:
         - in: path
           name: account_id
           schema:
-            type: integer
+            type: string
           required: true
       summary: get user information by account_id
       tags: [user]
-      description: get user information by account_id
+      description: Get user information by account_id
       responses:
         '200':
-          description: success to get user information
+          description: Success to get user information
           content:
             application/json:
               schema:
                 $ref: './schemas/user.yaml#/components/schemas/User'
         '400':
-          description: bad request
+          description: Bad request. This response will be returned if malformed `account_id` is given.
           content:
             application/json:
               schema:
-                $ref: './schemas/error.yaml#/components/schemas/Error'
+                $ref: './schemas/error.yaml#/components/schemas/Bad_Request'
         '404':
-          description: not found
+          description: Not found
           content:
             application/json:
               schema:
-                $ref: './schemas/error.yaml#/components/schemas/Error'
+                $ref: './schemas/error.yaml#/components/schemas/Not_Found'
         '500':
-          description: internal server error
+          description: Internal server error
           content:
             application/json:
               schema:
-                $ref: './schemas/error.yaml#/components/schemas/Error'
-    post:
-      tags: [user]
-      summary: register new user
-      description: register new user
-      responses:
-        '201':
-          description: success to register new user
-          content:
-            application/json:
-              schema:
-                $ref: './schemas/user.yaml#/components/schemas/User'
-        '400':
-          description: bad request
-          content:
-            application/json:
-              schema:
-                $ref: './schemas/error.yaml#/components/schemas/Error'
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                $ref: './schemas/error.yaml#/components/schemas/Error'
-        '500':
-          description: internal server error
-          content:
-            application/json:
-              schema:
-                $ref: './schemas/error.yaml#/components/schemas/Error'
+                $ref: './schemas/error.yaml#/components/schemas/Internal_Server_Error'
     put:
       tags: [user]
       summary: update user information
-      description: update user information
+      description: Update user information
       responses:
         '200':
-          description: success to update user information
+          description: Success to update user information
           content:
             application/json:
               schema:
                 $ref: './schemas/user.yaml#/components/schemas/User'
         '400':
-          description: bad request
+          description: Bad request. This response will be returned if form has some validation error.
           content:
             application/json:
               schema:
-                $ref: './schemas/error.yaml#/components/schemas/Error'
+                $ref: './schemas/error.yaml#/components/schemas/Bad_Request'
         '404':
-          description: not found
+          description: Not found
           content:
             application/json:
               schema:
-                $ref: './schemas/error.yaml#/components/schemas/Error'
+                $ref: './schemas/error.yaml#/components/schemas/Not_Found'
         '500':
-          description: internal server error
+          description: Internal server error
           content:
             application/json:
               schema:
-                $ref: './schemas/error.yaml#/components/schemas/Error'
+                $ref: './schemas/error.yaml#/components/schemas/Internal_Server_Error'
 
   '/post':
-    description: 'post information'
+    description: post information
+    post:
+      summary: post information
+      tags: [post]
+      description: Post coffee information user drank
+      responses:
+        '200':
+          description: Success to post information
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/post.yaml#/components/schemas/Post'
+
+  '/post/{post_id}':
+    description: specific post information
+    parameters:
+      - in: path
+        name: post_id
+        schema:
+          type: integer
+        required: true
     get:
       summary: get post information
       tags: [post]
-      description: get post information
+      description: Get post information
       responses:
         '200':
-          description: success to get post information
+          description: Success to get post information
           content:
             application/json:
               schema:
                 $ref: './schemas/post.yaml#/components/schemas/Post'
         '400':
-          description: bad request
+          description: Bad request. This response will be returned if malformed `post_id` is given.
           content:
             application/json:
               schema:
-                $ref: './schemas/error.yaml#/components/schemas/Error'
+                $ref: './schemas/error.yaml#/components/schemas/Bad_Request'
         '404':
-          description: not found
+          description: Not found
           content:
             application/json:
               schema:
-                $ref: './schemas/error.yaml#/components/schemas/Error'
+                $ref: './schemas/error.yaml#/components/schemas/Not_Found'
         '500':
-          description: internal server error
+          description: Internal server error
           content:
             application/json:
               schema:
-                $ref: './schemas/error.yaml#/components/schemas/Error'
-  '/post/{post_id}':
+                $ref: './schemas/error.yaml#/components/schemas/Internal_Server_Error'
+
     delete:
       summary: delete post information
       tags: [post]
-      description: delete post information
+      description: Delete post information
       responses:
         '200':
           description: success to delete post information
@@ -145,69 +161,60 @@ paths:
               schema:
                 $ref: './schemas/success.yaml#/components/schemas/Success'
         '400':
-          description: bad request
+          description: Bad request. This response will be returned if malformed `post_id` is given.
           content:
             application/json:
               schema:
-                $ref: './schemas/error.yaml#/components/schemas/Error'
+                $ref: './schemas/error.yaml#/components/schemas/Bad_Request'
         '404':
-          description: not found
+          description: Not found
           content:
             application/json:
               schema:
-                $ref: './schemas/error.yaml#/components/schemas/Error'
+                $ref: './schemas/error.yaml#/components/schemas/Not_Found'
         '500':
-          description: internal server error
+          description: Internal server error
           content:
             application/json:
               schema:
-                $ref: './schemas/error.yaml#/components/schemas/Error'
-    '/timeline':
-      get:
-        summary: get timeline
-        tags: [timeline]
-        description: get timeline
-          parameters:
-            query:
-              type: string
-              name: lower_post_id
-              description: lower post id
-              required: false
-              example: 1
-            query:
-              type: string
-              name: upper_post_id
-              description: upper post id
-              required: false
-              example: 10
-        responses:
-          '200':
-            description: success to get timeline
-            content:
-              application/json:
-                schema:
-                  $ref: './schemas/timeline.yaml#/components/schemas/Timeline'
-          '400':
-            description: bad request
-            content:
-              application/json:
-                schema:
-                  $ref: './schemas/error.yaml#/components/schemas/Error'
-          '404':
-            description: not found
-            content:
-              application/json:
-                schema:
-                  $ref: './schemas/error.yaml#/components/schemas/Error'
-          '500':
-            description: internal server error
-            content:
-              application/json:
-                schema:
-                  $ref: './schemas/error.yaml#/components/schemas/Error'
+                $ref: './schemas/error.yaml#/components/schemas/Internal_Server_Error'
 
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: './schemas/batch.yaml#/components/schemas/BatchCreate'
+  '/timeline':
+    get:
+      summary: get timeline
+      tags: [timeline]
+      description: Get the latest 50 posts.
+      parameters:
+        - in: query
+          schema:
+            type: string
+          name: lower_post_id
+          description: Return up to 50 posts newer than the given id.
+          required: false
+          example: 1
+        - in: query
+          schema:
+            type: string
+          name: upper_post_id
+          description: Return up to 50 posts older than the given id.
+          required: false
+          example: 10
+      responses:
+        '200':
+          description: Success to get timeline
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/timeline.yaml#/components/schemas/Timeline'
+        '400':
+          description: This response will be returned if both `lower_post_id` and `upper_post_id` are specified
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/error.yaml#/components/schemas/Bad_Request'
+
+  #   # requestBody:
+  #   #   content:
+  #   #     application/json:
+  #   #       schema:
+  #   #         $ref: './schemas/batch.yaml#/components/schemas/BatchCreate'

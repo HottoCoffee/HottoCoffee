@@ -4,38 +4,55 @@ components:
       type: object
       description: Post Schema
       properties:
-        - location:
-            type: string
-            description: where you drunk coffee
-        - origin:
-            type: string
-            description: where coffee bean from
-        - way_to_brew:
-            type: string
-            description: how to brew
-        - roast_level:
-            type: enum
-            description: roast level
-            enum:
-              - light
-              - cinnamon
-              - medium
-              - high
-              - city
-              - full_city
-              - french
-              - italian
-        - temperature:
-            type: integer
-            description: temperature to brew
-        - grams_of_coffee:
-            type: integer
-            description: grams of coffee
-        - grams_of_water:
-            type: integer
-            description: grams of water
-        - grind_size:
-            type: integer
-            description: how fine the coffee is ground
-        required:
-          - origin
+        location:
+          type: string
+          description: where you drank coffee
+          example: home
+        origin:
+          type: string
+          description: where coffee bean from
+          example: Columbia
+        way_to_brew:
+          type: string
+          description: how to brew
+          example: Black
+        roast_level:
+          type: enum
+          description: roast level
+          enum:
+            - light
+            - cinnamon
+            - medium
+            - high
+            - city
+            - full_city
+            - french
+            - italian
+        temperature:
+          type: integer
+          description: temperature to brew
+          example: 95
+        grams_of_coffee:
+          type: integer
+          description: grams of coffee
+          example: 10
+        grams_of_water:
+          type: integer
+          description: grams of water
+          example: 200
+        grind_size:
+          type: enum
+          description: how fine the coffee is ground
+          enum:
+            - finest
+            - fine
+            - medium-fine
+            - medium
+            - coarse
+        impression:
+          type: string
+          description: impressions of the coffee
+          maxLength: 255
+          example: very bitter
+      required:
+        - origin
