@@ -222,9 +222,3 @@ paths:
             application/json:
               schema:
                 $ref: './schemas/error.yaml#/components/schemas/Bad_Request'
-
-  #   # requestBody:
-  #   #   content:
-  #   #     application/json:
-  #   #       schema:
-  #   #         $ref: './schemas/batch.yaml#/components/schemas/BatchCreate'
