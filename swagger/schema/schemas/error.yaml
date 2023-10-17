@@ -1,18 +1,18 @@
 components:
   schemas:
-    Error:
+    Bad_Request:
       type: object
-      description: Error Schema
+      description: Bad Request Error Schema
       properties:
         status:
           type: int
           description: response status
-          example: 500
+          example: 400
         message:
           type: string
           description: Error message
           maxLength: 255
-          example: Server Error
+          example: Bad Request
           readOnly: true
       required:
         - status

@@ -9,16 +9,21 @@ components:
           readOnly: true
         account_id:
           type: string
-          description: this id can modify by user
+          description: This id can be modified by user
+          example: getupmax
         email:
           type: string
+          example: sample@example.com
         display_name:
           type: string
+          example: tasuku_nakagawa
         introduction:
           type: string
+          example: coffee lover
         icon_url:
           type: string
           description: icon url
+          example: https://example.com/icon.png
       required:
         - account_id
         - email
