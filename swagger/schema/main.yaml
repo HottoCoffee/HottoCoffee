@@ -62,16 +62,8 @@ paths:
                 $ref: './schemas/error.yaml#/components/schemas/Bad_Request'
         '404':
           description: Not found
-          content:
-            application/json:
-              schema:
-                $ref: './schemas/error.yaml#/components/schemas/Not_Found'
         '500':
           description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: './schemas/error.yaml#/components/schemas/Internal_Server_Error'
     put:
       tags: [user]
       summary: update user information
@@ -91,16 +83,8 @@ paths:
                 $ref: './schemas/error.yaml#/components/schemas/Bad_Request'
         '404':
           description: Not found
-          content:
-            application/json:
-              schema:
-                $ref: './schemas/error.yaml#/components/schemas/Not_Found'
         '500':
           description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: './schemas/error.yaml#/components/schemas/Internal_Server_Error'
 
   '/post':
     description: post information
@@ -148,16 +132,8 @@ paths:
                 $ref: './schemas/error.yaml#/components/schemas/Bad_Request'
         '404':
           description: Not found
-          content:
-            application/json:
-              schema:
-                $ref: './schemas/error.yaml#/components/schemas/Not_Found'
         '500':
           description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: './schemas/error.yaml#/components/schemas/Internal_Server_Error'
 
     delete:
       summary: delete post information
@@ -178,16 +154,8 @@ paths:
                 $ref: './schemas/error.yaml#/components/schemas/Bad_Request'
         '404':
           description: Not found
-          content:
-            application/json:
-              schema:
-                $ref: './schemas/error.yaml#/components/schemas/Not_Found'
         '500':
           description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: './schemas/error.yaml#/components/schemas/Internal_Server_Error'
 
   '/timeline':
     get:
