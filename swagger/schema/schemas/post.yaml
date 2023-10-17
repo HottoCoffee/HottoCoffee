@@ -7,11 +7,20 @@ components:
         post_id:
           type: integer
           readOnly: true
-        user:
+        user_info:
           type: object
-          allOf:
-            - $ref: './user.yaml#/components/schemas/User'
-            - type: object
+          properties:
+            user_id:
+              type: integer
+            account_id:
+              type: string
+              example: getupmax
+            dispaly_name:
+              type: string
+              example: tasuku_nakagawa
+            icon_url:
+              type: string
+              example: https://example.com/icon.png
           readOnly: true
         location:
           type: string
