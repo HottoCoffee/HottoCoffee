@@ -17,3 +17,20 @@ components:
       required:
         - status
         - message
+    Internal_Server_Error:
+      type: object
+      description: Internal Server Error Schema
+      properties:
+        status:
+          type: int
+          description: response status
+          example: 500
+        message:
+          type: string
+          description: Error message
+          maxLength: 255
+          example: Internal Server Error
+          readOnly: true
+      required:
+        - status
+        - message
