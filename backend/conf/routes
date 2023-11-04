@@ -1,4 +1,11 @@
 # POST    /user
 
-GET     /user/:accountId                   com.github.hottocoffee.controllers.UserController.find(accountId: String)
+GET     /user/:accountId    com.github.hottocoffee.controllers.UserController.find(accountId: String)
 # PUT     /user/:id
+
+# POST    /post
+
+GET     /post/:postId      com.github.hottocoffee.controllers.PostController.find(postId: Int)
+# DELETE  /post/:post_id
+
+# GET     /timeline
