@@ -9,15 +9,25 @@ import scala.util.chaining.*
 
 @Singleton
 class UserController @Inject()(val controllerComponents: ControllerComponents) extends BaseController:
-  private val objectMapper = ObjectMapper()
-
-  def find(id: Long): Action[_] = Action {
-    id match
-      case 1 => UserResponse(1, "getupmax", "hoge@example.com", "tasuku_nakagawa", "hoge", null)
-        .pipe(Json.toJson)
+  def find(accountId: String): Action[_] = Action {
+    accountId match
+      case "getupmax" => UserResponse(
+        userId = 1,
+        accountId = "getupmax",
+        email = "hoge@example.com",
+        displayName = "tasuku_nakagawa",
+        introduction = "hoge",
+        iconUrl = "https://avatars.githubusercontent.com/u/38446259?v=4"
+      ).pipe(Json.toJson)
         .pipe(Ok(_))
-      case 2 => UserResponse(2, "seito", "foo@example.com", "seito_hirai", "fuga", null)
-        .pipe(Json.toJson)
+      case "seito2" => UserResponse(
+        userId = 2,
+        accountId = "seito",
+        email = "foo@example.com",
+        displayName = "seito_hirai",
+        introduction = "fuga",
+        iconUrl = "https://avatars.githubusercontent.com/u/42537610?v=4"
+      ).pipe(Json.toJson)
         .pipe(Ok(_))
       case _ => NotFound
   }

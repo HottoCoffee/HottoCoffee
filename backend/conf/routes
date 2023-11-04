@@ -1,1 +1,4 @@
-GET     /user/:id                   com.github.hottocoffee.controllers.UserController.find(id: Long)
+# POST    /user
+
+GET     /user/:accountId                   com.github.hottocoffee.controllers.UserController.find(accountId: String)
+# PUT     /user/:id
