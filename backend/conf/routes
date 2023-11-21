@@ -5,7 +5,7 @@ GET     /user/:accountId    com.github.hottocoffee.controllers.UserController.fi
 
 # POST    /post
 
-GET     /post/:postId      com.github.hottocoffee.controllers.PostController.find(postId: Int)
+GET     /post/:postId       com.github.hottocoffee.controllers.PostController.find(postId: Int)
 # DELETE  /post/:post_id
 
-# GET     /timeline
+GET     /timeline           com.github.hottocoffee.controllers.TimelineController.list(lower_post_id: Int | Null, upper_post_id: Int | Null)
