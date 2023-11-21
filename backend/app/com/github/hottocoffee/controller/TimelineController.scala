@@ -4,14 +4,15 @@ import com.github.hottocoffee.controller.schema.response.{Post, RoastLevel, User
 import jakarta.inject.{Inject, Singleton}
 import play.api.libs.json.{JsNull, JsString, Json, Writes}
 import play.api.mvc.{Action, BaseController, ControllerComponents}
+import play.components.BaseComponents
 
 import scala.util.chaining.*
 
 @Singleton
-class PostController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
-  def find(postId: Int): Action[_] = Action {
-    postId match
-      case 1 => Post(
+class TimelineController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
+  def list(lower_post_id: Option[Int], upper_post_id: Option[Int]): Action[_] = Action {
+    Seq(
+      Post(
         postId = 1,
         userInfo = UserInfo(
           userId = 2,
@@ -28,10 +29,8 @@ class PostController @Inject()(val controllerComponents: ControllerComponents) e
         gramsOfWater = null,
         grindSize = null,
         impression = "Wow",
-      ).pipe(Json.toJson)
-        .pipe(Ok(_))
-
-      case 2 => Post(
+      ),
+      Post(
         postId = 2,
         userInfo = UserInfo(
           userId = 2,
@@ -48,9 +47,8 @@ class PostController @Inject()(val controllerComponents: ControllerComponents) e
         gramsOfWater = null,
         grindSize = null,
         impression = null,
-      ).pipe(Json.toJson)
-        .pipe(Ok(_))
-
-      case _ => NotFound
+      )
+    ).pipe(Json.toJson)
+      .pipe(Ok(_))
   }
 }

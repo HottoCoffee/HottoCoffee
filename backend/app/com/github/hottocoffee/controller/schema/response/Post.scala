@@ -1,10 +1,9 @@
 package com.github.hottocoffee.controller.schema.response
 
-import com.github.hottocoffee.controller.{GrindSize, PostSchema, RoastLevel, UserInfoSchema}
-import play.api.libs.json.{Json, Writes}
+import play.api.libs.json.{JsString, Json, Writes}
 
 case class Post(postId: Int,
-                userInfo: UserInfoSchema,
+                userInfo: UserInfo,
                 location: String,
                 origin: String,
                 wayToBrew: String,
@@ -28,7 +27,7 @@ object GrindSize:
   implicit val writes: Writes[GrindSize] = o => JsString(o.toString.toLowerCase)
 
 object Post:
-  implicit val writes: Writes[PostSchema] = o => Json.obj(
+  implicit val writes: Writes[Post] = o => Json.obj(
     "post_id" -> o.postId,
     "user_info" -> o.userInfo,
     "location" -> o.location,
