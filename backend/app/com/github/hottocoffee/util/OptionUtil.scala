@@ -2,7 +2,10 @@ package com.github.hottocoffee.util
 
 import scala.language.implicitConversions
 
-implicit def value2Optional[A](value: A): Option[A] = Some(value)
+implicit def value2Optional[A](value: A): Option[A] = value match
+  case null => None
+  case _ => Some(value)
+
 implicit def null2Optional(value: Null): Option[_] = None
 
 implicit def nullable2Optional[A](value: A | Null): Option[A] = value match

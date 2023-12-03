@@ -47,7 +47,7 @@ class UserController @Inject()(val controllerComponents: ControllerComponents) e
             introduction = "hoge",
             iconUrl = "https://avatars.githubusercontent.com/u/38446259?v=4",
           ).pipe(Json.toJson)
-            .pipe(Ok(_))
+            .pipe(Created(_))
   }
 
   def update(accountId: String): Action[_] = Action { request =>
