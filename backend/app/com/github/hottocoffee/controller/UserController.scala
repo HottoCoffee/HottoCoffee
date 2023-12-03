@@ -1,9 +1,8 @@
 package com.github.hottocoffee.controller
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.hottocoffee.controller.schema.response.User
 import jakarta.inject.{Inject, Singleton}
-import play.api.libs.json.{JsPath, JsValue, Json, Writes}
+import play.api.libs.json.Json
 import play.api.mvc.{Action, BaseController, ControllerComponents}
 
 import scala.util.chaining.*

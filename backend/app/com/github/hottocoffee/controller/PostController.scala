@@ -2,7 +2,7 @@ package com.github.hottocoffee.controller
 
 import com.github.hottocoffee.controller.schema.response.{Post, RoastLevel, UserInfo}
 import jakarta.inject.{Inject, Singleton}
-import play.api.libs.json.{JsNull, JsString, Json, Writes}
+import play.api.libs.json.Json
 import play.api.mvc.{Action, BaseController, ControllerComponents}
 
 import scala.util.chaining.*

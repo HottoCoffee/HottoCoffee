@@ -1,12 +1,11 @@
 # POST    /user
 
-GET     /user/:accountId    com.github.hottocoffee.controller.UserController.find(accountId: String)
+GET         /user/:accountId        com.github.hottocoffee.controller.UserController.find(accountId: String)
 # PUT     /user/:id
 
 # POST    /post
 
-GET     /post/:postId       com.github.hottocoffee.controller.PostController.find(postId: Int)
+GET         /post/:postId           com.github.hottocoffee.controller.PostController.find(postId: Int)
 # DELETE  /post/:post_id
 
-# GET     /timeline           com.github.hottocoffee.controller.TimelineController.list(lowerPostId: Int | Null, upperPostId: Int | Null)
-GET     /timeline           com.github.hottocoffee.controller.TimelineController.list(lower_post_id: Option[Int], upper_post_id: Option[Int])
+GET         /timeline               com.github.hottocoffee.controller.TimelineController.list(lower_post_id: Option[Int], upper_post_id: Option[Int])
