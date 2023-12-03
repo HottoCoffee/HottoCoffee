@@ -1,18 +1,19 @@
 package com.github.hottocoffee.controller.schema.response
 
-import play.api.libs.json.{JsString, Json, Writes}
+import play.api.libs.functional.syntax.toFunctionalBuilderOps
+import play.api.libs.json.{JsPath, JsString, Json, Writes}
 
-case class Post(postId: Int,
-                userInfo: UserInfo,
-                location: String,
-                origin: String,
-                wayToBrew: String,
-                roastLevel: RoastLevel | Null,
-                temperature: Int | Null, // 0 -- 100
-                gramsOfCoffee: Int | Null,
-                gramsOfWater: Int | Null,
-                grindSize: GrindSize | Null,
-                impression: String)
+case class PostOutput(postId: Int,
+                      userInfo: UserInfoOutput,
+                      location: String,
+                      origin: String,
+                      wayToBrew: String,
+                      roastLevel: Option[RoastLevel],
+                      temperature: Option[Int], // 0 -- 100
+                      gramsOfCoffee: Option[Int],
+                      gramsOfWater: Option[Int],
+                      grindSize: Option[GrindSize],
+                      impression: String)
 
 enum RoastLevel:
   case LIGHT, CINNAMON, MEDIUM, HIGH, CITY, FULL_CITY, FRENCH, ITALIAN
@@ -26,30 +27,35 @@ enum GrindSize:
 object GrindSize:
   implicit val writes: Writes[GrindSize] = o => JsString(o.toString.toLowerCase)
 
-object Post:
-  implicit val writes: Writes[Post] = o => Json.obj(
-    "post_id" -> o.postId,
-    "user_info" -> o.userInfo,
-    "location" -> o.location,
-    "origin" -> o.origin,
-    "way_to_brew" -> o.wayToBrew,
-    "roast_level" -> o.roastLevel,
-    "temperature" -> o.temperature,
-    "grams_of_coffee" -> o.gramsOfCoffee,
-    "grams_of_watter" -> o.gramsOfWater,
-    "grind_size" -> o.grindSize,
-    "impression" -> o.impression,
-  )
+object PostOutput:
+  implicit val writes: Writes[PostOutput] = (
+    (JsPath \ "post_id").write[Int] ~
+      (JsPath \ "user_info").write[UserInfoOutput] ~
+      (JsPath \ "location").write[String] ~
+      (JsPath \ "origin").write[String] ~
+      (JsPath \ "way_to_brew").write[String] ~
+      (JsPath \ "roast_level").writeNullable[RoastLevel] ~
+      (JsPath \ "temperature").writeNullable[Int] ~
+      (JsPath \ "grams_of_coffee").writeNullable[Int] ~
+      (JsPath \ "grams_of_water").writeNullable[Int] ~
+      (JsPath \ "grind_size").writeNullable[GrindSize] ~
+      (JsPath \ "impression").write[String]
+    )(o => (
+    o.postId, o.userInfo, o.location, o.origin, o.wayToBrew, o.roastLevel, o.temperature, o.gramsOfCoffee,
+    o.gramsOfWater, o.grindSize, o.impression
+  ))
 
-case class UserInfo(userId: Int,
-                    accountId: String,
-                    displayName: String,
-                    iconUrl: String)
+case class UserInfoOutput(userId: Int,
+                          accountId: String,
+                          displayName: String,
+                          iconUrl: Option[String])
 
-object UserInfo:
-  implicit val writes: Writes[UserInfo] = o => Json.obj(
-    "user_id" -> o.userId,
-    "account_id" -> o.accountId,
-    "display_name" -> o.displayName,
-    "icon_url" -> o.iconUrl,
-  )
+object UserInfoOutput:
+  implicit val writes: Writes[UserInfoOutput] = (
+    (JsPath \ "user_id").write[Int] ~
+      (JsPath \ "account_id").write[String] ~
+      (JsPath \ "display_name").write[String] ~
+      (JsPath \ "icon_url").writeNullable[String]
+    )(o => (
+    o.userId, o.accountId, o.displayName, o.iconUrl
+  ))

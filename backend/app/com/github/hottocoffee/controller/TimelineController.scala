@@ -1,19 +1,21 @@
 package com.github.hottocoffee.controller
 
-import com.github.hottocoffee.controller.schema.response.{Post, RoastLevel, UserInfo}
+import com.github.hottocoffee.controller.schema.response.{PostOutput, RoastLevel, UserInfoOutput}
+import com.github.hottocoffee.util.value2Optional
 import jakarta.inject.{Inject, Singleton}
 import play.api.libs.json.{Json, Writes}
 import play.api.mvc.{Action, BaseController, ControllerComponents}
 
 import scala.util.chaining.*
 
+
 @Singleton
 class TimelineController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
   def list(lower_post_id: Option[Int], upper_post_id: Option[Int]): Action[_] = Action {
     Seq(
-      Post(
+      PostOutput(
         postId = 1,
-        userInfo = UserInfo(
+        userInfo = UserInfoOutput(
           userId = 2,
           accountId = "seito2",
           displayName = "seito_hirai",
@@ -29,9 +31,9 @@ class TimelineController @Inject()(val controllerComponents: ControllerComponent
         grindSize = null,
         impression = "Wow",
       ),
-      Post(
+      PostOutput(
         postId = 2,
-        userInfo = UserInfo(
+        userInfo = UserInfoOutput(
           userId = 2,
           accountId = "seito2",
           displayName = "seito_hirai",

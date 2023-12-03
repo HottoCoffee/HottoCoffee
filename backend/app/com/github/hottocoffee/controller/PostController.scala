@@ -1,6 +1,7 @@
 package com.github.hottocoffee.controller
 
-import com.github.hottocoffee.controller.schema.response.{Post, RoastLevel, UserInfo}
+import com.github.hottocoffee.controller.schema.response.{PostOutput, RoastLevel, UserInfoOutput}
+import com.github.hottocoffee.util.value2Optional
 import jakarta.inject.{Inject, Singleton}
 import play.api.libs.json.Json
 import play.api.mvc.{Action, BaseController, ControllerComponents}
@@ -11,9 +12,9 @@ import scala.util.chaining.*
 class PostController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
   def find(postId: Int): Action[_] = Action {
     postId match
-      case 1 => Post(
+      case 1 => PostOutput(
         postId = 1,
-        userInfo = UserInfo(
+        userInfo = UserInfoOutput(
           userId = 2,
           accountId = "seito2",
           displayName = "seito_hirai",
@@ -31,9 +32,9 @@ class PostController @Inject()(val controllerComponents: ControllerComponents) e
       ).pipe(Json.toJson)
         .pipe(Ok(_))
 
-      case 2 => Post(
+      case 2 => PostOutput(
         postId = 2,
-        userInfo = UserInfo(
+        userInfo = UserInfoOutput(
           userId = 2,
           accountId = "seito2",
           displayName = "seito_hirai",
