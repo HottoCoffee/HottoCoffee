@@ -1,0 +1,11 @@
+POST          /user                   com.github.hottocoffee.controller.UserController.register()
+
+GET           /user/:accountId        com.github.hottocoffee.controller.UserController.find(accountId: String)
+PUT           /user/:accountId        com.github.hottocoffee.controller.UserController.update(accountId: String)
+
+POST          /post                   com.github.hottocoffee.controller.PostController.post()
+
+GET           /post/:postId           com.github.hottocoffee.controller.PostController.find(postId: Int)
+DELETE        /post/:postId           com.github.hottocoffee.controller.PostController.delete(postId: Int)
+
+GET           /timeline               com.github.hottocoffee.controller.TimelineController.list(lower_post_id: Option[Int], upper_post_id: Option[Int])
