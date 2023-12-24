@@ -9,6 +9,8 @@ scalaVersion := "3.3.1"
 
 libraryDependencies += guice
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "6.0.0-RC2" % Test
+libraryDependencies += "com.mysql" % "mysql-connector-j" % "8.2.0"
+libraryDependencies ++= Seq(evolutions, jdbc)
 
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "io.github.hottocoffee.controllers._"
