@@ -1,0 +1,18 @@
+services: 
+  mysql: 
+    build: 
+      context: ./db
+    image: hottocoffee-mysql
+    command: mysqld
+    ports: 
+      - 3306:3306
+    privileged: true
+    environment: 
+      - MYSQL_DATABASE=hottocoffee
+      - MYSQL_ROOT_PASSWORD=root
+      - TZ=Asia/Tokyo
+    healthcheck: 
+      test: mysqladmin ping -uroot -proot || exit 1
+      interval: 1s
+      retries: 999999999
+      timeout: 999999999s
