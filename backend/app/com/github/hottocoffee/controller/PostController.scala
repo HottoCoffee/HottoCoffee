@@ -1,6 +1,7 @@
 package com.github.hottocoffee.controller
 
 import com.github.hottocoffee.controller.schema.response.{PostInput, PostOutput, RoastLevel, UserInfoOutput}
+import com.github.hottocoffee.dao.{PostDao, PostRecord}
 import com.github.hottocoffee.util.value2Optional
 import jakarta.inject.{Inject, Singleton}
 import play.api.libs.json.{JsError, JsSuccess, Json}
@@ -9,7 +10,7 @@ import play.api.mvc.{Action, BaseController, ControllerComponents}
 import scala.util.chaining.*
 
 @Singleton
-class PostController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
+class PostController @Inject()(val controllerComponents: ControllerComponents, val postDao: PostDao) extends BaseController {
   def find(postId: Int): Action[_] = Action {
     postId match
       case 1 => PostOutput(
@@ -61,6 +62,21 @@ class PostController @Inject()(val controllerComponents: ControllerComponents) e
       case Some(json) => json.validate[PostInput] match
         case e: JsError => BadRequest
         case JsSuccess(body, _) =>
+          postDao.insert(
+            PostRecord(
+              postId = None,
+              userId = 1,
+              location = "home",
+              origin = "Kenya",
+              wayToBrew = "Latte",
+              roastLevel = "medium",
+              temperature = None,
+              gramsOfCoffee = None,
+              gramsOfWater = None,
+              grindSize = None,
+              impression = "Wow"
+            )
+          )
           val output = PostOutput(
             postId = 1,
             userInfo = UserInfoOutput(

@@ -9,10 +9,14 @@ scalaVersion := "3.3.1"
 
 libraryDependencies ++= Seq(
   guice,
+  evolutions,
+  jdbc,
 
   "com.mysql" % "mysql-connector-j" % "8.2.0",
-  "org.playframework" %% "play-slick" % "6.0.0-M2", // 6.0.0 does not support Scala 3
-  "org.playframework" %% "play-slick-evolutions" % "6.0.0-M2",
+  //  "org.playframework" %% "play-slick" % "6.0.0-M2", // 6.0.0 does not support Scala 3
+  //  "org.playframework" %% "play-slick-evolutions" % "6.0.0-M2",
+
+  "org.playframework.anorm" %% "anorm" % "2.7.0",
 
   "org.scalatestplus.play" %% "scalatestplus-play" % "6.0.0" % Test,
 )
