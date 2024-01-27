@@ -1,6 +1,7 @@
 package com.github.hottocoffee.controller
 
-import com.github.hottocoffee.controller.schema.response.{PostOutput, RoastLevel, UserInfoOutput}
+import com.github.hottocoffee.controller.schema.response.{PostOutput, UserInfoOutput}
+import com.github.hottocoffee.model.{CoffeeOrigin, GramsOfCoffee, GramsOfWater, GrindSize, Location, RoastLevel, Temperature, WayToBrew}
 import com.github.hottocoffee.util.value2Optional
 import jakarta.inject.{Inject, Singleton}
 import play.api.libs.json.{Json, Writes}
@@ -21,10 +22,10 @@ class TimelineController @Inject()(val controllerComponents: ControllerComponent
           displayName = "seito_hirai",
           iconUrl = "https://avatars.githubusercontent.com/u/42537610?v=4",
         ),
-        location = "home",
-        origin = "Kenya",
-        wayToBrew = "Latte",
-        roastLevel = RoastLevel.MEDIUM,
+        location = Location("home").toOption,
+        origin = CoffeeOrigin("Kenya").toOption.get,
+        wayToBrew = WayToBrew("Latte").toOption,
+        roastLevel = RoastLevel.medium,
         temperature = null,
         gramsOfCoffee = null,
         gramsOfWater = null,
@@ -39,9 +40,9 @@ class TimelineController @Inject()(val controllerComponents: ControllerComponent
           displayName = "seito_hirai",
           iconUrl = "https://avatars.githubusercontent.com/u/42537610?v=4",
         ),
-        location = "home",
-        origin = "Kenya",
-        wayToBrew = "Latte",
+        location = Location("home").toOption,
+        origin = CoffeeOrigin("Kenya").toOption.get,
+        wayToBrew = WayToBrew("Latte").toOption,
         roastLevel = null,
         temperature = null,
         gramsOfCoffee = null,

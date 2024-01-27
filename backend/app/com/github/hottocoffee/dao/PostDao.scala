@@ -1,11 +1,22 @@
 package com.github.hottocoffee.dao
 
 import anorm.*
+import com.github.hottocoffee.model.{CoffeeOrigin, GramsOfCoffee, GramsOfWater, GrindSize, Location, RoastLevel, Temperature, WayToBrew}
 import jakarta.inject.Inject
+import org.apache.pekko.http.scaladsl.model.headers.Origin
 import play.api.db.Database
 
 class PostDao @Inject()(db: Database) {
-  def insert(postRecord: PostRecord): PostRecord = {
+  def insert(userId: Int,
+             location: Option[Location],
+             origin: CoffeeOrigin,
+             wayToBrew: Option[WayToBrew],
+             roastLevel: Option[RoastLevel],
+             temperature: Option[Temperature],
+             gramsOfCoffee: Option[GramsOfCoffee],
+             gramsOfWater: Option[GramsOfWater],
+             grindSize: Option[GrindSize],
+             impression: Option[String]): Option[Long] = {
     val id: Option[Long] = db.withConnection { implicit connection =>
       SQL(
         """
@@ -14,20 +25,20 @@ class PostDao @Inject()(db: Database) {
         """
       )
         .on(
-          "userId" -> postRecord.userId,
-          "location" -> postRecord.location,
-          "origin" -> postRecord.origin,
-          "wayToBrew" -> postRecord.wayToBrew,
-          "roastLevel" -> postRecord.roastLevel,
-          "temperature" -> postRecord.temperature,
-          "gramsOfCoffee" -> postRecord.gramsOfCoffee,
-          "gramsOfWater" -> postRecord.gramsOfWater,
-          "grindSize" -> postRecord.grindSize,
-          "impression" -> postRecord.impression,
+          "userId" -> userId,
+          "location" -> location.map(_.value),
+          "origin" -> origin.value,
+          "wayToBrew" -> wayToBrew.map(_.value),
+          "roastLevel" -> roastLevel.map(_.toString),
+          "temperature" -> temperature.map(_.value),
+          "gramsOfCoffee" -> gramsOfCoffee.map(_.value),
+          "gramsOfWater" -> gramsOfWater.map(_.value),
+          "grindSize" -> grindSize.map(_.toString),
+          "impression" -> impression,
         )
         .executeInsert()
     }
-    postRecord.copy(postId = id.map(_.toInt))
+    id
   }
 }
 
