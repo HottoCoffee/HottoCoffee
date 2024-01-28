@@ -15,7 +15,7 @@ components:
             account_id:
               type: string
               example: getupmax
-            dispaly_name:
+            display_name:
               type: string
               example: tasuku_nakagawa
             icon_url:
