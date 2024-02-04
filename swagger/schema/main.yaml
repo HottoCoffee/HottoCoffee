@@ -35,13 +35,55 @@ paths:
             schema:
               $ref: './schemas/user.yaml#/components/schemas/User'
 
+  '/user/sign-in':
+    post:
+      tags: [user]
+      summary: Sign in as an existing user
+      description: Sign in as an existing user.
+      responses:
+        '200':
+          description: Succeed to log in
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Access token. Currently, it is JWT.
+                properties:
+                  token:
+                    type: string
+        '401':
+          description: Bad request. This response will be returned if posted form has some validation errors.
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/error.yaml#/components/schemas/Unauthorized'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/error.yaml#/components/schemas/Internal_Server_Error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: User login schema
+              properties:
+                email:
+                  type: string
+                  example: sample@example.com
+                password:
+                  type: string
+                  example: root
+
   '/user/{account_id}':
     description: 'user information'
     get:
       parameters:
         - in: path
           name: account_id
-          schema:
+          schema: 
             type: string
           required: true
       summary: get user information by account_id
