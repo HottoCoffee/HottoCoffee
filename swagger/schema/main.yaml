@@ -52,7 +52,7 @@ paths:
                   token:
                     type: string
         '401':
-          description: Bad request. This response will be reuturned if posted form has some validation errors.
+          description: Bad request. This response will be returned if posted form has some validation errors.
           content:
             application/json:
               schema:
