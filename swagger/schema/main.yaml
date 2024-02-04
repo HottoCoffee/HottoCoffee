@@ -47,9 +47,9 @@ paths:
             application/json:
               schema:
                 type: object
-                description: JWT
+                description: Access token. Currently, it is JWT.
                 properties:
-                  jwt:
+                  token:
                     type: string
         '401':
           description: Bad request. This response will be reuturned if posted form has some validation errors.
