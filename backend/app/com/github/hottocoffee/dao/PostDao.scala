@@ -3,7 +3,6 @@ package com.github.hottocoffee.dao
 import anorm.*
 import com.github.hottocoffee.model.{CoffeeOrigin, GramsOfCoffee, GramsOfWater, GrindSize, Location, RoastLevel, Temperature, WayToBrew}
 import jakarta.inject.Inject
-import org.apache.pekko.http.scaladsl.model.headers.Origin
 import play.api.db.Database
 
 class PostDao @Inject()(db: Database) {
