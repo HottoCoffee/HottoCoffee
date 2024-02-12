@@ -5,24 +5,29 @@ import jakarta.inject.{Inject, Singleton}
 
 
 @Singleton
-class TimelineService @Inject()(val postDao: PostDao, val userDao: UserDao) {
+class TimelineService @Inject()(val postDao: PostDao, val userDao: UserDao):
   private val POST_COUNT_IN_TIMELINE = 50
 
-  def getLatestPosts: Option[List[(PostRecord, UserRecord)]] = {
-    val postRecords = postDao.selectLatest(POST_COUNT_IN_TIMELINE)
+  def getLatestPosts: Either[Unit, List[(PostRecord, UserRecord)]] =
+    combineWithUser(postDao.selectLatest(POST_COUNT_IN_TIMELINE))
+
+  def getLatestPostsNewerThan(postId: Int): Either[Unit, List[(PostRecord, UserRecord)]] =
+    combineWithUser(postDao.selectLatestAfter(postId, POST_COUNT_IN_TIMELINE))
+
+  def getLatestPostsOlderThan(postId: Int): Either[Unit, List[(PostRecord, UserRecord)]] =
+    combineWithUser(postDao.selectLatestAfter(postId, POST_COUNT_IN_TIMELINE))
+
+  //   def getLatestPostsAfter
+  private def combineWithUser(postRecords: List[PostRecord]): Either[Unit, List[(PostRecord, UserRecord)]] = {
     val userIds = postRecords.map(_.userId).distinct
     val userById = userDao.selectByUserIds(userIds)
       .map(userRecord => (userRecord.id, userRecord))
       .toMap
 
-    postRecords.map(postRecord => userById.get(postRecord.userId).map((postRecord, _)))
-      .foldLeft(Option(List[(PostRecord, UserRecord)]()))((acc, record) =>
-        (acc, record) match
-          case (Some(acc), Some(record)) => Some(acc :+ record)
-          case _ => None
-      )
+    postRecords.map(postRecord => userById.get(postRecord.userId) match
+      case None => Left(())
+      case Some(userRecord) => Right((postRecord, userRecord))
+    ).partitionMap(identity) match
+      case (Nil, rights) => Right(rights)
+      case _ => Left(())
   }
-
-  // def getLatestPostsBefore
-  // def getLatestPostsAfter
-}

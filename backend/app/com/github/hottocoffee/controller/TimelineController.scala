@@ -16,12 +16,20 @@ class TimelineController @Inject()(val controllerComponents: ControllerComponent
     (lower_post_id, upper_post_id) match
       case (Some(_), Some(_)) => BadRequest
       case (None, None) => timelineService.getLatestPosts match
-        case None => InternalServerError
-        case Some(list) => list.map(convert).partitionMap(identity) match
+        case Left(_) => InternalServerError
+        case Right(list) => list.map(convert).partitionMap(identity) match
           case (Nil, rights) => rights.pipe(Json.toJson).pipe(Ok(_))
           case _ => InternalServerError
-      case (Some(lowerPostId), _) => Seq[PostOutput]().pipe(Json.toJson).pipe(Ok(_))
-      case (_, Some(upperPostId)) => Seq[PostOutput]().pipe(Json.toJson).pipe(Ok(_))
+      case (Some(lowerPostId), _) => timelineService.getLatestPostsNewerThan(lowerPostId) match
+        case Left(_) => InternalServerError
+        case Right(list) => list.map(convert).partitionMap(identity) match
+          case (Nil, rights) => rights.pipe(Json.toJson).pipe(Ok(_))
+          case _ => InternalServerError
+      case (_, Some(upperPostId)) => timelineService.getLatestPostsOlderThan(upperPostId) match
+        case Left(_) => InternalServerError
+        case Right(list) => list.map(convert).partitionMap(identity) match
+          case (Nil, rights) => rights.pipe(Json.toJson).pipe(Ok(_))
+          case _ => InternalServerError
   }
 
   private def convert(postRecord: PostRecord, userRecord: UserRecord): Either[Unit, PostOutput] =

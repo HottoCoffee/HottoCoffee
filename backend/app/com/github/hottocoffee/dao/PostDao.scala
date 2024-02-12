@@ -41,13 +41,26 @@ class PostDao @Inject()(db: Database) {
     id
   }
 
-  def selectLatest(count: Int): List[PostRecord] = {
+  def selectLatest(count: Int): List[PostRecord] =
     db.withConnection { implicit connection =>
       SQL("select * from post order by created_at desc limit {count}")
         .on("count" -> count)
         .as(parser.*)
     }
-  }
+
+  def selectLatestAfter(idExcluded: Int, count: Int): List[PostRecord] =
+    db.withConnection { implicit connection =>
+      SQL("select * from post where id > {id} order by created_at limit {count}")
+        .on("id" -> idExcluded, "count" -> count)
+        .as(parser.*)
+    }.reverse
+
+  def selectLatestBefore(idExcluded: Int, count: Int): List[PostRecord] =
+    db.withConnection { implicit connection =>
+      SQL("select * from post where id < {id} order by created_at desc limit {count}")
+        .on("id" -> idExcluded, "count" -> count)
+        .as(parser.*)
+    }
 }
 
 case class PostRecord(postId: Int,
