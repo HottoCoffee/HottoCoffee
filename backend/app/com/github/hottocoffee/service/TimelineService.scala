@@ -17,7 +17,6 @@ class TimelineService @Inject()(val postDao: PostDao, val userDao: UserDao):
   def getLatestPostsOlderThan(postId: Int): Either[Unit, List[(PostRecord, UserRecord)]] =
     combineWithUser(postDao.selectLatestBefore(postId, POST_COUNT_IN_TIMELINE))
 
-  //   def getLatestPostsAfter
   private def combineWithUser(postRecords: List[PostRecord]): Either[Unit, List[(PostRecord, UserRecord)]] = {
     val userIds = postRecords.map(_.userId).distinct
     val userById = userDao.selectByUserIds(userIds)
