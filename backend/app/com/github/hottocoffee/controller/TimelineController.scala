@@ -1,56 +1,59 @@
 package com.github.hottocoffee.controller
 
 import com.github.hottocoffee.controller.schema.response.{PostOutput, UserInfoOutput}
+import com.github.hottocoffee.dao.{PostRecord, UserRecord}
 import com.github.hottocoffee.model.{CoffeeOrigin, GramsOfCoffee, GramsOfWater, GrindSize, Location, RoastLevel, Temperature, WayToBrew}
-import com.github.hottocoffee.util.value2Optional
+import com.github.hottocoffee.service.TimelineService
 import jakarta.inject.{Inject, Singleton}
 import play.api.libs.json.{Json, Writes}
 import play.api.mvc.{Action, BaseController, ControllerComponents}
 
 import scala.util.chaining.*
 
-
 @Singleton
-class TimelineController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
+class TimelineController @Inject()(val controllerComponents: ControllerComponents, val timelineService: TimelineService) extends BaseController:
   def list(lower_post_id: Option[Int], upper_post_id: Option[Int]): Action[_] = Action {
-    Seq(
-      PostOutput(
-        postId = 1,
-        userInfo = UserInfoOutput(
-          userId = 2,
-          accountId = "seito2",
-          displayName = "seito_hirai",
-          iconUrl = "https://avatars.githubusercontent.com/u/42537610?v=4",
-        ),
-        location = Location("home").toOption,
-        origin = CoffeeOrigin("Kenya").toOption.get,
-        wayToBrew = WayToBrew("Latte").toOption,
-        roastLevel = RoastLevel.medium,
-        temperature = null,
-        gramsOfCoffee = null,
-        gramsOfWater = null,
-        grindSize = null,
-        impression = "Wow",
-      ),
-      PostOutput(
-        postId = 2,
-        userInfo = UserInfoOutput(
-          userId = 2,
-          accountId = "seito2",
-          displayName = "seito_hirai",
-          iconUrl = "https://avatars.githubusercontent.com/u/42537610?v=4",
-        ),
-        location = Location("home").toOption,
-        origin = CoffeeOrigin("Kenya").toOption.get,
-        wayToBrew = WayToBrew("Latte").toOption,
-        roastLevel = null,
-        temperature = null,
-        gramsOfCoffee = null,
-        gramsOfWater = null,
-        grindSize = null,
-        impression = null,
-      )
-    ).pipe(Json.toJson)
-      .pipe(Ok(_))
+    (lower_post_id, upper_post_id) match
+      case (Some(_), Some(_)) => BadRequest
+      case (None, None) => timelineService.getLatestPosts match
+        case None => InternalServerError
+        case Some(list) => list.map(convert).partitionMap(identity) match
+          case (Nil, rights) => rights.pipe(Json.toJson).pipe(Ok(_))
+          case _ => InternalServerError
+      case (Some(lowerPostId), _) => Seq[PostOutput]().pipe(Json.toJson).pipe(Ok(_))
+      case (_, Some(upperPostId)) => Seq[PostOutput]().pipe(Json.toJson).pipe(Ok(_))
   }
-}
+
+  private def convert(postRecord: PostRecord, userRecord: UserRecord): Either[Unit, PostOutput] =
+    for {
+      location <- postRecord.location.toOptionEither(Location(_))
+      origin <- CoffeeOrigin(postRecord.origin)
+      wayToBrew <- postRecord.wayToBrew.toOptionEither(WayToBrew(_))
+      roastLevel <- postRecord.wayToBrew.toOptionEither(RoastLevel(_))
+      temperature <- postRecord.temperature.toOptionEither(Temperature(_))
+      gramsOfCoffee <- postRecord.gramsOfCoffee.toOptionEither(GramsOfCoffee(_))
+      gramsOfWater <- postRecord.gramsOfWater.toOptionEither(GramsOfWater(_))
+      grindSize <- postRecord.grindSize.toOptionEither(GrindSize(_))
+    } yield PostOutput(
+      postRecord.postId,
+      UserInfoOutput(
+        userId = userRecord.id,
+        accountId = "seito2", // TODO
+        displayName = "seito_hirai",
+        iconUrl = Some("https://avatars.githubusercontent.com/u/42537610?v=4"),
+      ),
+      location,
+      origin,
+      wayToBrew,
+      roastLevel,
+      temperature,
+      gramsOfCoffee,
+      gramsOfWater,
+      grindSize,
+      postRecord.impression,
+    )
+
+extension [A](option: Option[A])
+  def toOptionEither[B](f: A => Either[Unit, B]): Either[Unit, Option[B]] = option match
+    case Some(value) => f(value).map(Some(_))
+    case None => Right(None)
