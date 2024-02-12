@@ -85,8 +85,8 @@ val parser = {
     get[Option[Int]]("post.temperature") ~
     get[Option[Int]]("post.grams_of_coffee") ~
     get[Option[Int]]("post.grams_of_water") ~
-    get[Option[String]]("post.grams_of_grind_size") ~
-    get[Option[String]]("post.grams_of_impression")
+    get[Option[String]]("post.grind_size") ~
+    get[Option[String]]("post.impression")
 } map {
   case id ~ userId ~ location ~ origin ~ wayToBrew ~ roastLevel ~ temperature ~ gramsOfCoffee ~ gramsOfWater ~ grindSize ~ impression =>
     PostRecord(
