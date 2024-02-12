@@ -12,4 +12,3 @@ object RoastLevel:
       case Some(value) => Right(value)
       case None => Left(())
   }
-  
