@@ -7,10 +7,17 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "3.3.1"
 
-libraryDependencies += guice
-libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "6.0.0-RC2" % Test
-libraryDependencies += "com.mysql" % "mysql-connector-j" % "8.2.0"
-libraryDependencies ++= Seq(evolutions, jdbc)
+libraryDependencies ++= Seq(
+  guice,
+  evolutions,
+  jdbc,
+
+  "com.mysql" % "mysql-connector-j" % "8.2.0",
+
+  "org.playframework.anorm" %% "anorm" % "2.7.0",
+
+  "org.scalatestplus.play" %% "scalatestplus-play" % "6.0.0" % Test,
+)
 
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "io.github.hottocoffee.controllers._"
