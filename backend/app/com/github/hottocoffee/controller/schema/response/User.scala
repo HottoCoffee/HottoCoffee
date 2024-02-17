@@ -20,17 +20,25 @@ object UserOutput:
       (JsPath \ "icon_url").writeNullable[String]
     )(o => (o.userId, o.accountId, o.email, o.displayName, o.introduction, o.iconUrl))
 
-case class UserInput(accountId: String,
-                     email: String,
-                     displayName: String,
-                     introduction: Option[String],
-                     iconUrl: Option[String])
+case class UserRegisterInput(accountId: String,
+                             email: String,
+                             displayName: String,
+                             introduction: Option[String],
+                             iconUrl: Option[String])
 
-object UserInput:
-  implicit val reads: Reads[UserInput] = (
+object UserRegisterInput:
+  implicit val reads: Reads[UserRegisterInput] = (
     (JsPath \ "account_id").read[String] ~
       (JsPath \ "email").read[String] ~
       (JsPath \ "display_name").read[String] ~
       (JsPath \ "introduction").readNullable[String] ~
       (JsPath \ "icon_url").readNullable[String]
-    )(UserInput.apply _)
+    )(UserRegisterInput.apply _)
+
+case class UserSignInInput(email: String, password: String)
+
+object UserSignInInput:
+  implicit val reads: Reads[UserSignInInput] = (
+    (JsPath \ "email").read[String] ~
+      (JsPath \ "password").read[String]
+    )(UserSignInInput.apply _)
