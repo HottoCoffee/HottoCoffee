@@ -61,7 +61,7 @@ export const PostForm = () => {
           name="origin"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>豆の産地(必須)</FormLabel>
+              <FormLabel>豆の産地 ※必須</FormLabel>
               <FormControl>
                 <Input placeholder="例）ブラジル" {...field} />
               </FormControl>
@@ -89,14 +89,14 @@ export const PostForm = () => {
           name="roastLevel"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>豆の産地</FormLabel>
+              <FormLabel>豆の焙煎度合い</FormLabel>
               <FormControl>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
                   <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Theme" />
+                    <SelectValue placeholder="選択してください" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="light">ライト</SelectItem>
@@ -159,17 +159,17 @@ export const PostForm = () => {
 
         <FormField
           control={form.control}
-          name="roastLevel"
+          name="grindSize"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>コーヒー豆の挽き方</FormLabel>
+              <FormLabel>コーヒー豆の挽き度合い</FormLabel>
               <FormControl>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
                   <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Theme" />
+                    <SelectValue placeholder="選択してください" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value={GrindSize.finest}>極細挽き</SelectItem>
@@ -189,10 +189,10 @@ export const PostForm = () => {
 
         <FormField
           control={form.control}
-          name="gramsOfWater"
+          name="impression"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>お湯のグラム数</FormLabel>
+              <FormLabel>コメント</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="飲んだ感想"
