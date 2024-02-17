@@ -11,6 +11,7 @@ libraryDependencies ++= Seq(
   guice,
   evolutions,
   jdbc,
+  filters,
 
   "com.mysql" % "mysql-connector-j" % "8.2.0",
 
