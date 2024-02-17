@@ -62,7 +62,7 @@ class PostController @Inject()(val controllerComponents: ControllerComponents, v
       case None => UnsupportedMediaType
       case Some(json) =>
         json.validate[PostInput] match
-          case e: JsError => BadRequest
+          case _: JsError => BadRequest
           case JsSuccess(body, _) =>
             postDao.insert(
               userId = 2, // TODO: get from session
