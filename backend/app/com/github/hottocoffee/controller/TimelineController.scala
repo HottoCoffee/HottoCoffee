@@ -9,7 +9,6 @@ import play.api.libs.json.Json
 import play.api.mvc.Results.{InternalServerError, Ok}
 import play.api.mvc.{Action, BaseController, ControllerComponents}
 
-import scala.language.implicitConversions
 import scala.util.chaining.*
 
 @Singleton
