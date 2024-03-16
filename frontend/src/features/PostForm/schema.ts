@@ -28,3 +28,5 @@ export const postFormSchema = z.object({
   grindSize: z.nativeEnum(GrindSize).optional(),
   impression: z.string().min(0).max(255).optional(),
 });
+
+export type PostFormSchemaType = z.infer<typeof postFormSchema>;

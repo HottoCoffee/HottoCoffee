@@ -1,3 +1,23 @@
+import { useCreatePost } from "@/api/hooks/useCreatePost";
 import { PostForm } from "@/features/PostForm/PostForm";
+import { ComponentProps } from "react";
 
-export const PostPage = PostForm;
+type OnSubmitType = ComponentProps<typeof PostForm>["onSubmit"];
+
+export const PostPage = () => {
+  const { mutate } = useCreatePost();
+
+  const onSubmit: OnSubmitType = (state) => {
+    mutate({
+      location: state.location,
+      origin: state.origin,
+      way_to_brew: state.wayToBrew,
+      temperature: state.temperature,
+      grams_of_coffee: state.gramsOfCoffee,
+      grind_size: state.grindSize,
+      impression: state.impression,
+    });
+  };
+
+  return <PostForm onSubmit={onSubmit} />;
+};

@@ -16,3 +16,21 @@ export enum GrindSize {
   medium = "medium",
   coarse = "coarse",
 }
+
+export interface Post {
+  post_id: number;
+  user_info?: {
+    user_id: number;
+    account_id: string;
+    display_name: string;
+    icon_url: string;
+  };
+  location?: string;
+  origin: string;
+  way_to_brew?: string;
+  roast_level?: RoastLevel;
+  temperature?: number;
+  grams_of_coffee?: number;
+  grind_size?: GrindSize;
+  impression?: string;
+}

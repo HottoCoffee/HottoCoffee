@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { postFormSchema } from "./schema";
+import { PostFormSchemaType, postFormSchema } from "./schema";
 import { Button } from "@/components/ui/button";
 import {
   FormField,
@@ -22,26 +21,24 @@ import {
 import { GrindSize } from "@/api/interfaces";
 import { Textarea } from "@/components/ui/textarea";
 
-export const PostForm = () => {
-  const form = useForm<z.infer<typeof postFormSchema>>({
-    resolver: zodResolver(postFormSchema),
-    defaultValues: {
-      temperature: 90,
-    },
-  });
+type Props = {
+  onSubmit: (state: PostFormSchemaType) => void;
+};
 
-  function onSubmit(values: z.infer<typeof postFormSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+export const PostForm = (props: Props) => {
+  const form = useForm<PostFormSchemaType>({
+    resolver: zodResolver(postFormSchema),
+    defaultValues: {},
+  });
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(props.onSubmit)}
         className="space-y-2 p-4 dark"
       >
+        <h1>コーヒーの記録を投稿</h1>
+
         <FormField
           control={form.control}
           name="location"
