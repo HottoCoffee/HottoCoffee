@@ -1,11 +1,12 @@
 package com.github.hottocoffee.controller
 
-import com.github.hottocoffee.controller.schema.response.{PostOutput, UserInfoOutput}
+import com.github.hottocoffee.controller.schema.response.{PostOutput, TimelineOutput, UserInfoOutput}
 import com.github.hottocoffee.dao.{PostRecord, UserRecord}
 import com.github.hottocoffee.model.{CoffeeOrigin, GramsOfCoffee, GramsOfWater, GrindSize, Location, RoastLevel, Temperature, WayToBrew}
 import com.github.hottocoffee.service.TimelineService
 import jakarta.inject.{Inject, Singleton}
-import play.api.libs.json.{Json, Writes}
+import play.api.libs.json.Json
+import play.api.mvc.Results.{InternalServerError, Ok}
 import play.api.mvc.{Action, BaseController, ControllerComponents}
 
 import scala.util.chaining.*
@@ -15,21 +16,17 @@ class TimelineController @Inject()(val controllerComponents: ControllerComponent
   def list(lower_post_id: Option[Int], upper_post_id: Option[Int]): Action[_] = Action {
     (lower_post_id, upper_post_id) match
       case (Some(_), Some(_)) => BadRequest
-      case (None, None) => timelineService.getLatestPosts match
-        case Left(_) => InternalServerError
-        case Right(list) => list.map(convert).partitionMap(identity) match
-          case (Nil, rights) => rights.pipe(Json.toJson).pipe(Ok(_))
-          case _ => InternalServerError
-      case (Some(lowerPostId), _) => timelineService.getLatestPostsNewerThan(lowerPostId) match
-        case Left(_) => InternalServerError
-        case Right(list) => list.map(convert).partitionMap(identity) match
-          case (Nil, rights) => rights.pipe(Json.toJson).pipe(Ok(_))
-          case _ => InternalServerError
-      case (_, Some(upperPostId)) => timelineService.getLatestPostsOlderThan(upperPostId) match
-        case Left(_) => InternalServerError
-        case Right(list) => list.map(convert).partitionMap(identity) match
-          case (Nil, rights) => rights.pipe(Json.toJson).pipe(Ok(_))
-          case _ => InternalServerError
+      case _ =>
+        val timeline = (lower_post_id, upper_post_id) match
+          case (None, None) => timelineService.getLatestPosts
+          case (Some(lowerPostId), _) => timelineService.getLatestPostsNewerThan(lowerPostId)
+          case (_, Some(upperPostId)) => timelineService.getLatestPostsOlderThan(upperPostId)
+
+        timeline match
+          case Left(_) => InternalServerError
+          case Right((list, hasNext)) => list.map(convert).partitionMap(identity) match
+            case (Nil, posts) => TimelineOutput(posts, hasNext).pipe(Json.toJson).pipe(Ok(_))
+            case _ => InternalServerError
   }
 
   private def convert(postRecord: PostRecord, userRecord: UserRecord): Either[Unit, PostOutput] =

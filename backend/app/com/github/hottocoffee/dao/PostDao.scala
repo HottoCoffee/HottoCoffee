@@ -6,7 +6,7 @@ import com.github.hottocoffee.model.{CoffeeOrigin, GramsOfCoffee, GramsOfWater, 
 import jakarta.inject.Inject
 import play.api.db.Database
 
-class PostDao @Inject()(db: Database) {
+class PostDao @Inject()(db: Database):
   def insert(userId: Int,
              location: Option[Location],
              origin: CoffeeOrigin,
@@ -43,25 +43,32 @@ class PostDao @Inject()(db: Database) {
 
   def selectLatest(count: Int): List[PostRecord] =
     db.withConnection { implicit connection =>
-      SQL("select * from post order by created_at desc limit {count}")
+      SQL("select * from post order by id desc limit {count}")
         .on("count" -> count)
         .as(parser.*)
     }
 
   def selectLatestAfter(idExcluded: Int, count: Int): List[PostRecord] =
     db.withConnection { implicit connection =>
-      SQL("select * from post where id > {id} order by created_at limit {count}")
+      SQL("select * from post where id > {id} order by id limit {count}")
         .on("id" -> idExcluded, "count" -> count)
         .as(parser.*)
     }.reverse
 
   def selectLatestBefore(idExcluded: Int, count: Int): List[PostRecord] =
     db.withConnection { implicit connection =>
-      SQL("select * from post where id < {id} order by created_at desc limit {count}")
+      println("selectLatestBefore")
+      SQL("select * from post where id < {id} order by id desc limit {count}")
         .on("id" -> idExcluded, "count" -> count)
         .as(parser.*)
     }
-}
+
+  def selectExistEqualOrBefore(idIncluded: Int): Boolean =
+    db.withConnection { implicit connection =>
+      SQL("select exists(select 1 from post where id <= {id})")
+        .on("id" -> idIncluded)
+        .as(SqlParser.scalar[Int].single) == 1
+    }
 
 case class PostRecord(postId: Int,
                       userId: Int,
