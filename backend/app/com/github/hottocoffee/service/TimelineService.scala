@@ -8,14 +8,17 @@ import jakarta.inject.{Inject, Singleton}
 class TimelineService @Inject()(val postDao: PostDao, val userDao: UserDao):
   private val POST_COUNT_IN_TIMELINE = 50
 
-  def getLatestPosts: Either[Unit, List[(PostRecord, UserRecord)]] =
-    combineWithUser(postDao.selectLatest(POST_COUNT_IN_TIMELINE))
+  def getLatestPosts: Either[Unit, (List[(PostRecord, UserRecord)], Boolean)] =
+    combineWithUser(postDao.selectLatest(POST_COUNT_IN_TIMELINE + 1))
+      .map(list => (list.slice(0, POST_COUNT_IN_TIMELINE), list.size == POST_COUNT_IN_TIMELINE + 1))
 
-  def getLatestPostsNewerThan(postId: Int): Either[Unit, List[(PostRecord, UserRecord)]] =
+  def getLatestPostsNewerThan(postId: Int): Either[Unit, (List[(PostRecord, UserRecord)], Boolean)] =
     combineWithUser(postDao.selectLatestAfter(postId, POST_COUNT_IN_TIMELINE))
+      .map(list => (list, postDao.selectExistEqualOrBefore(postId)))
 
-  def getLatestPostsOlderThan(postId: Int): Either[Unit, List[(PostRecord, UserRecord)]] =
-    combineWithUser(postDao.selectLatestBefore(postId, POST_COUNT_IN_TIMELINE))
+  def getLatestPostsOlderThan(postId: Int): Either[Unit, (List[(PostRecord, UserRecord)], Boolean)] =
+    combineWithUser(postDao.selectLatestBefore(postId, POST_COUNT_IN_TIMELINE + 1))
+      .map(list => (list.slice(0, POST_COUNT_IN_TIMELINE), list.size == POST_COUNT_IN_TIMELINE + 1))
 
   private def combineWithUser(postRecords: List[PostRecord]): Either[Unit, List[(PostRecord, UserRecord)]] = {
     val userIds = postRecords.map(_.userId).distinct
