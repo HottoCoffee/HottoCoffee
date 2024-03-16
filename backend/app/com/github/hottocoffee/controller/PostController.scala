@@ -1,6 +1,6 @@
 package com.github.hottocoffee.controller
 
-import com.github.hottocoffee.auth.LoginRequiredAction
+import com.github.hottocoffee.controller.auth.LoginRequiredAction
 import com.github.hottocoffee.controller.schema.response.{PostInput, PostOutput, UserInfoOutput}
 import com.github.hottocoffee.dao.PostDao
 import com.github.hottocoffee.model.{CoffeeOrigin, Location, RoastLevel, WayToBrew}
@@ -13,7 +13,8 @@ import scala.util.chaining.*
 
 @Singleton
 class PostController @Inject()
-(val controllerComponents: ControllerComponents, val postDao: PostDao, val loginRequiredAction: LoginRequiredAction) extends BaseController {
+(val controllerComponents: ControllerComponents, val postDao: PostDao, val loginRequiredAction: LoginRequiredAction)
+  extends BaseController:
   def find(postId: Int): Action[_] = Action {
     postId match
       case 1 => PostOutput(
@@ -67,7 +68,7 @@ class PostController @Inject()
           case _: JsError => BadRequest
           case JsSuccess(body, _) =>
             postDao.insert(
-              userId = 2, // TODO: get from session
+              userId = request.user,
               location = body.location,
               origin = body.origin,
               wayToBrew = body.wayToBrew,
@@ -103,4 +104,3 @@ class PostController @Inject()
   def delete(postId: Int): Action[_] = Action {
     Ok
   }
-}
