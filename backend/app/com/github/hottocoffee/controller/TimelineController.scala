@@ -2,8 +2,9 @@ package com.github.hottocoffee.controller
 
 import com.github.hottocoffee.controller.schema.response.{PostOutput, TimelineOutput, UserInfoOutput}
 import com.github.hottocoffee.dao.{PostRecord, UserRecord}
-import com.github.hottocoffee.model.{CoffeeOrigin, GramsOfCoffee, GramsOfWater, GrindSize, Location, RoastLevel, Temperature, WayToBrew}
+import com.github.hottocoffee.model.{CoffeeOrigin, GramsOfCoffee, GramsOfWater, GrindSize, Location, RoastLevel, Temperature, User, WayToBrew}
 import com.github.hottocoffee.service.TimelineService
+import com.github.hottocoffee.util.nullable2Optional
 import jakarta.inject.{Inject, Singleton}
 import play.api.libs.json.Json
 import play.api.mvc.Results.{InternalServerError, Ok}
@@ -29,7 +30,7 @@ class TimelineController @Inject()(val controllerComponents: ControllerComponent
             case _ => InternalServerError
   }
 
-  private def convert(postRecord: PostRecord, userRecord: UserRecord): Either[Unit, PostOutput] =
+  private def convert(postRecord: PostRecord, user: User): Either[Unit, PostOutput] =
     for {
       location <- postRecord.location.toOptionEither(Location(_))
       origin <- CoffeeOrigin(postRecord.origin)
@@ -42,10 +43,10 @@ class TimelineController @Inject()(val controllerComponents: ControllerComponent
     } yield PostOutput(
       postRecord.postId,
       UserInfoOutput(
-        userId = userRecord.id,
-        accountId = "seito2", // TODO
-        displayName = "seito_hirai",
-        iconUrl = Some("https://avatars.githubusercontent.com/u/42537610?v=4"),
+        userId = user.id.toInt,
+        accountId = user.accountId,
+        displayName = user.displayName,
+        iconUrl = user.iconUrl,
       ),
       location,
       origin,

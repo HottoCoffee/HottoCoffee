@@ -1,19 +1,78 @@
 package com.github.hottocoffee.dao
 
+import anorm.SqlParser.{get, long, str}
+import anorm.{SQL, on, ~}
+import com.github.hottocoffee.model.User
+import com.github.hottocoffee.service.{EncryptService, EncryptedPassword, PlainPassword}
+import com.github.hottocoffee.util.{nullable2Optional, option2Nullable}
 import jakarta.inject.Inject
+import play.api.db.Database
 
-class UserDao @Inject() {
-  def selectByUserIds(userIds: List[Int]): List[UserRecord] = List(UserRecord(2))
+class UserDao @Inject()(db: Database) {
+  def selectByUserIds(userIds: List[Int]): List[User] = List.empty
 
-  //  def selectByEmailAndPassword(email: String, password: Array[Byte]): Option[UserRecord] = {
-  //    db.withConnection { implicit connection =>
-  //      SQL("select * from user where email = {email} and password = {password}")
-  //        .on(
-  //          "email" -> email,
-  //          "password" -> password,
-  //        )
-  //    }
-  //  }
+  def selectByEmailAndPassword(email: String, password: PlainPassword): Option[User] =
+    db.withConnection { implicit connection =>
+        SQL("select * from user where email = {email}")
+          .on("email" -> email)
+          .as(userRecordParser.singleOpt)
+      }
+      .filter(record => EncryptService.isCorrectPassword(password, EncryptedPassword(record.password)))
+      .map(_.toUser)
+
+  def insert(accountId: String,
+             email: String,
+             password: PlainPassword,
+             displayName: String,
+             introduction: String,
+             iconUrl: String | Null,
+            ): Option[User] =
+    val optionId: Option[Long] = db.withConnection { implicit connection =>
+      SQL(
+        """
+          insert into user (account_id, email, password, display_name, introduction, icon_url)
+          values ({accountId}, {email}, {password}, {displayName}, {introduction}, {iconUrl})
+        """
+      )
+        .on(
+          "accountId" -> accountId,
+          "email" -> email,
+          "password" -> EncryptService.encrypt(password).value,
+          "displayName" -> displayName,
+          "introduction" -> introduction,
+          "iconUrl" -> nullable2Optional(iconUrl)
+        )
+        .executeInsert()
+    }
+    optionId.map(id => User(id, accountId, email, displayName, introduction, iconUrl))
 }
 
-case class UserRecord(id: Int)
+private case class UserRecord(id: Long,
+                              accountId: String,
+                              email: String,
+                              password: String,
+                              displayName: String,
+                              introduction: String,
+                              iconUrl: Option[String]):
+  def toUser: User = User(id, accountId, email, displayName, introduction, iconUrl)
+
+private val userRecordParser = {
+  long("user.id") ~
+    str("user.account_id") ~
+    str("user.email") ~
+    str("user.password") ~
+    str("user.display_name") ~
+    str("user.introduction") ~
+    get[Option[String]]("user.icon_url")
+} map {
+  case id ~ accountId ~ email ~ password ~ displayName ~ introduction ~ iconUrl =>
+    UserRecord(
+      id,
+      accountId,
+      email,
+      password,
+      displayName,
+      introduction,
+      iconUrl,
+    )
+}
