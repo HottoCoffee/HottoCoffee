@@ -18,21 +18,21 @@ components:
         - status
         - message
 
-    Unauthorized: 
+    Unauthorized:
       type: object
       description: Unauthorized Error Schema
-      properties: 
-        status: 
+      properties:
+        status:
           type: int
           description: response status
           example: 401
-        message: 
+        message:
           type: string
           description: Error message
           maxLength: 255
           example: Unauthorized
           readOnly: true
-      required: 
+      required:
         - status
         - message
 
