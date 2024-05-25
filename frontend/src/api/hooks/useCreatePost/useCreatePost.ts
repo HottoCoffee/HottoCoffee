@@ -17,6 +17,7 @@ export const useCreatePost = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
       });
 
       return res.json();

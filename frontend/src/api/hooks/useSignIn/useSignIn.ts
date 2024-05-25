@@ -21,6 +21,7 @@ export const useSignIn = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
       });
 
       return res.json();
