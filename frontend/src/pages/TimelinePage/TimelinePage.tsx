@@ -20,6 +20,12 @@ export const TimelinePage = () => {
         );
       })}
 
+      {timeline.length === 0 && (
+        <p className="flex justify-center items-center h-full">
+          投稿はありません
+        </p>
+      )}
+
       {showTimeline.hasNextPage && (
         <Button onClick={() => showTimeline.fetchNextPage()}>もっとみる</Button>
       )}
