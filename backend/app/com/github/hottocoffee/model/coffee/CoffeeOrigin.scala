@@ -1,4 +1,4 @@
-package com.github.hottocoffee.model
+package com.github.hottocoffee.model.coffee
 
 /**
  * Countries where the coffee is harvested (e.g., BrazilS)

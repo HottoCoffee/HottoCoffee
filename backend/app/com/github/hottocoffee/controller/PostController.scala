@@ -2,8 +2,8 @@ package com.github.hottocoffee.controller
 
 import com.github.hottocoffee.controller.auth.LoginRequiredAction
 import com.github.hottocoffee.controller.schema.response.{PostInput, PostOutput, UserInfoOutput}
-import com.github.hottocoffee.dao.PostDao
-import com.github.hottocoffee.model.{CoffeeOrigin, Location, RoastLevel, WayToBrew}
+import com.github.hottocoffee.dao.{PostDao, UserDao}
+import com.github.hottocoffee.model.coffee.{CoffeeOrigin, Location, RoastLevel, WayToBrew}
 import com.github.hottocoffee.util.value2Optional
 import jakarta.inject.{Inject, Singleton}
 import play.api.libs.json.{JsError, JsSuccess, Json}
@@ -12,8 +12,10 @@ import play.api.mvc.{Action, BaseController, ControllerComponents}
 import scala.util.chaining.*
 
 @Singleton
-class PostController @Inject()
-(val controllerComponents: ControllerComponents, val postDao: PostDao, val loginRequiredAction: LoginRequiredAction)
+class PostController @Inject()(val controllerComponents: ControllerComponents,
+                               private val postDao: PostDao,
+                               private val userDao: UserDao,
+                               private val loginRequiredAction: LoginRequiredAction)
   extends BaseController:
   def find(postId: Int): Action[_] = Action {
     postId match
@@ -81,12 +83,7 @@ class PostController @Inject()
             ) match
               case Some(id) => PostOutput(
                 postId = id.toInt,
-                userInfo = UserInfoOutput(
-                  userId = 2,
-                  accountId = "seito2",
-                  displayName = "seito_hirai",
-                  iconUrl = "https://avatars.githubusercontent.com/u/42537610?v=4",
-                ),
+                userInfo = UserInfoOutput.from(userDao.selectByUserId(request.user).get),
                 location = body.location,
                 origin = body.origin,
                 wayToBrew = body.wayToBrew,

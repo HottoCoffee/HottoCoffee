@@ -1,7 +1,7 @@
 package com.github.hottocoffee.service
 
 import com.github.hottocoffee.dao.UserDao
-import com.github.hottocoffee.model.User
+import com.github.hottocoffee.model.{PlainPassword, User}
 import jakarta.inject.Inject
 
 import scala.util.{Failure, Success, Try}

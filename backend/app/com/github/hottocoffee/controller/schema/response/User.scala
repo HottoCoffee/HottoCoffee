@@ -1,5 +1,7 @@
 package com.github.hottocoffee.controller.schema.response
 
+import com.github.hottocoffee.model.User
+import com.github.hottocoffee.util.nullable2Optional
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
 import play.api.libs.json.*
 
@@ -19,6 +21,15 @@ object UserOutput:
       (JsPath \ "introduction").writeNullable[String] ~
       (JsPath \ "icon_url").writeNullable[String]
     )(o => (o.userId, o.accountId, o.email, o.displayName, o.introduction, o.iconUrl))
+
+  def from(user: User): UserOutput = UserOutput(
+    user.id.toInt,
+    user.accountId,
+    user.email,
+    user.displayName,
+    Some(user.introduction),
+    user.iconUrl,
+  )
 
 case class UserRegisterInput(accountId: String,
                              email: String,

@@ -1,4 +1,4 @@
-package com.github.hottocoffee.model
+package com.github.hottocoffee.model.coffee
 
 enum GrindSize:
   case finest, fine, medium_fine, medium, coarse

@@ -1,6 +1,8 @@
 package com.github.hottocoffee.controller.schema.response
 
-import com.github.hottocoffee.model.{CoffeeOrigin, GramsOfCoffee, GramsOfWater, GrindSize, Location, RoastLevel, Temperature, WayToBrew}
+import com.github.hottocoffee.model.User
+import com.github.hottocoffee.model.coffee.{CoffeeOrigin, GramsOfCoffee, GramsOfWater, GrindSize, Location, RoastLevel, Temperature, WayToBrew}
+import com.github.hottocoffee.util.nullable2Optional
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
 import play.api.libs.json.{JsError, JsNumber, JsPath, JsResult, JsString, JsSuccess, Reads, Writes, __}
 
@@ -147,3 +149,10 @@ object UserInfoOutput:
     )(o => (
     o.userId, o.accountId, o.displayName, o.iconUrl
   ))
+
+  def from(user: User): UserInfoOutput = UserInfoOutput(
+    user.id.toInt,
+    user.accountId,
+    user.displayName,
+    user.iconUrl,
+  )

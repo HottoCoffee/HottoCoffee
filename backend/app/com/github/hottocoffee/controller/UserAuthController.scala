@@ -3,7 +3,8 @@ package com.github.hottocoffee.controller
 import com.github.hottocoffee.controller.auth.saveUserToSession
 import com.github.hottocoffee.controller.schema.response.{UserOutput, UserRegisterInput, UserSignInInput}
 import com.github.hottocoffee.dao.UserDao
-import com.github.hottocoffee.service.{PlainPassword, RegisterUserService}
+import com.github.hottocoffee.model.PlainPassword
+import com.github.hottocoffee.service.RegisterUserService
 import com.github.hottocoffee.util.{option2Nullable, value2Optional}
 import jakarta.inject.{Inject, Singleton}
 import play.api.Logger
@@ -24,26 +25,20 @@ class UserAuthController @Inject()(val controllerComponents: ControllerComponent
       case Some(json) => json.validate[UserRegisterInput] match
         case _: JsError => BadRequest
         case JsSuccess(body, _) =>
-          registerUserService.register(
-            body.accountId,
-            body.email,
-            PlainPassword(body.password),
-            body.displayName,
-            body.introduction.orElse(""),
-            body.iconUrl,
-          ) match
-            case Left(errorMessage) =>
-              logger.warn(errorMessage)
-              BadRequest
-            case Right(user) => UserOutput(
-              user.id.toInt,
-              user.accountId,
-              user.email,
-              user.displayName,
-              user.introduction,
-              user.iconUrl,
-            ).pipe(Json.toJson)
-              .pipe(Created(_))
+          PlainPassword(body.password) match
+            case Left(_) => BadRequest
+            case Right(validPlainPassword) => registerUserService.register(
+              body.accountId,
+              body.email,
+              validPlainPassword,
+              body.displayName,
+              body.introduction.orElse(""),
+              body.iconUrl,
+            ) match
+              case Left(errorMessage) =>
+                logger.warn(errorMessage)
+                BadRequest
+              case Right(user) => UserOutput.from(user).pipe(Json.toJson).pipe(Created(_))
   }
 
   def signIn(): Action[_] = Action { request =>
@@ -52,17 +47,11 @@ class UserAuthController @Inject()(val controllerComponents: ControllerComponent
       case Some(json) => json.validate[UserSignInInput] match
         case _: JsError => BadRequest
         case JsSuccess(body, _) =>
-          userDao.selectByEmailAndPassword(body.email, PlainPassword(body.password)) match
-            case None => BadRequest
-            case Some(user) =>
-              saveUserToSession(user, request.session)
-              UserOutput(
-                userId = user.id.toInt,
-                accountId = user.accountId,
-                email = user.email,
-                displayName = user.displayName,
-                introduction = user.introduction,
-                iconUrl = user.iconUrl,
-              ).pipe(Json.toJson)
-                .pipe(Ok(_))
+          PlainPassword(body.password) match
+            case Left(_) => BadRequest
+            case Right(validPlainPassword) => userDao.selectByEmailAndPassword(body.email, validPlainPassword) match
+              case None => BadRequest
+              case Some(user) =>
+                saveUserToSession(user, request.session)
+                UserOutput.from(user).pipe(Json.toJson).pipe(Ok(_))
   }

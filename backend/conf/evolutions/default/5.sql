@@ -6,4 +6,4 @@ alter table user
 # --- !Downs
 alter table user
     drop constraint unique_email,
-    drop constraint unique_accout_id;
+    drop constraint unique_account_id;
