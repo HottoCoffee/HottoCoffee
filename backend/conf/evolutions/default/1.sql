@@ -5,7 +5,6 @@ create table user (
     updated_at datetime not null default current_timestamp on update current_timestamp,
     primary key (id)
 );
-insert into user values (), ();
 
 # --- !Downs
 drop table user

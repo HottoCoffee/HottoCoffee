@@ -45,22 +45,21 @@ class PostDao @Inject()(db: Database):
     db.withConnection { implicit connection =>
       SQL("select * from post order by id desc limit {count}")
         .on("count" -> count)
-        .as(parser.*)
+        .as(postRecordParser.*)
     }
 
   def selectLatestAfter(idExcluded: Int, count: Int): List[PostRecord] =
     db.withConnection { implicit connection =>
       SQL("select * from post where id > {id} order by id limit {count}")
         .on("id" -> idExcluded, "count" -> count)
-        .as(parser.*)
+        .as(postRecordParser.*)
     }.reverse
 
   def selectLatestBefore(idExcluded: Int, count: Int): List[PostRecord] =
     db.withConnection { implicit connection =>
-      println("selectLatestBefore")
       SQL("select * from post where id < {id} order by id desc limit {count}")
         .on("id" -> idExcluded, "count" -> count)
-        .as(parser.*)
+        .as(postRecordParser.*)
     }
 
   def selectExistEqualOrBefore(idIncluded: Int): Boolean =
@@ -82,7 +81,7 @@ case class PostRecord(postId: Int,
                       grindSize: Option[String],
                       impression: Option[String])
 
-val parser = {
+private val postRecordParser = {
   int("post.id") ~
     int("post.user_id") ~
     get[Option[String]]("post.location") ~

@@ -15,6 +15,8 @@ libraryDependencies ++= Seq(
 
   "com.mysql" % "mysql-connector-j" % "8.2.0",
 
+  "org.mindrot" % "jbcrypt" % "0.4",
+
   "org.playframework.anorm" %% "anorm" % "2.7.0",
 
   "org.scalatestplus.play" %% "scalatestplus-play" % "6.0.0" % Test,
