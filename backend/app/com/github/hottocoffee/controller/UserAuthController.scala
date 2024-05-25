@@ -4,7 +4,7 @@ import com.github.hottocoffee.controller.auth.saveUserToSession
 import com.github.hottocoffee.controller.schema.response.{UserOutput, UserRegisterInput, UserSignInInput}
 import com.github.hottocoffee.dao.UserDao
 import com.github.hottocoffee.service.PlainPassword
-import com.github.hottocoffee.util.value2Optional
+import com.github.hottocoffee.util.{option2Nullable, value2Optional}
 import jakarta.inject.{Inject, Singleton}
 import play.api.libs.json.{JsError, JsSuccess, Json}
 import play.api.mvc.{Action, BaseController, ControllerComponents}
@@ -18,17 +18,26 @@ class UserAuthController @Inject()(val controllerComponents: ControllerComponent
     request.body.asJson match
       case None => UnsupportedMediaType
       case Some(json) => json.validate[UserRegisterInput] match
-        case e: JsError => BadRequest
+        case _: JsError => BadRequest
         case JsSuccess(body, _) =>
-          UserOutput(
-            userId = 1,
-            accountId = "getupmax",
-            email = "hoge@example.com",
-            displayName = "tasuku_nakagawa",
-            introduction = "hoge",
-            iconUrl = "https://avatars.githubusercontent.com/u/38446259?v=4",
-          ).pipe(Json.toJson)
-            .pipe(Created(_))
+          userDao.insert(
+            body.accountId,
+            body.email,
+            PlainPassword(body.password),
+            body.displayName,
+            body.introduction,
+            body.iconUrl,
+          ).map(user =>
+            UserOutput(
+              user.id.toInt,
+              user.accountId,
+              user.email,
+              user.displayName,
+              user.introduction,
+              user.iconUrl,
+            ).pipe(Json.toJson)
+              .pipe(Created(_))
+          ).orElse(BadRequest)
   }
 
   def signIn(): Action[_] = Action { request =>

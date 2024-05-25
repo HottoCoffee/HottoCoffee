@@ -22,6 +22,7 @@ object UserOutput:
 
 case class UserRegisterInput(accountId: String,
                              email: String,
+                             password: String,
                              displayName: String,
                              introduction: Option[String],
                              iconUrl: Option[String])
@@ -30,6 +31,7 @@ object UserRegisterInput:
   implicit val reads: Reads[UserRegisterInput] = (
     (JsPath \ "account_id").read[String] ~
       (JsPath \ "email").read[String] ~
+      (JsPath \ "password").read[String] ~
       (JsPath \ "display_name").read[String] ~
       (JsPath \ "introduction").readNullable[String] ~
       (JsPath \ "icon_url").readNullable[String]
