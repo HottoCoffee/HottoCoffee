@@ -38,7 +38,9 @@ class UserAuthController @Inject()(val controllerComponents: ControllerComponent
               case Left(errorMessage) =>
                 logger.warn(errorMessage)
                 BadRequest
-              case Right(user) => UserOutput.from(user).pipe(Json.toJson).pipe(Created(_))
+              case Right(user) =>
+                saveUserToSession(user, request.session)
+                UserOutput.from(user).pipe(Json.toJson).pipe(Created(_))
   }
 
   def signIn(): Action[_] = Action { request =>
