@@ -1,5 +1,6 @@
 package com.github.hottocoffee.service
 
+import com.github.hottocoffee.model.{EncryptedPassword, PlainPassword}
 import org.mindrot.jbcrypt.BCrypt
 
 object EncryptService:
@@ -8,7 +9,3 @@ object EncryptService:
 
   def isCorrectPassword(plainPassword: PlainPassword, encryptedPassword: EncryptedPassword): Boolean =
     BCrypt.checkpw(plainPassword.value, encryptedPassword.value)
-
-case class PlainPassword(value: String)
-
-case class EncryptedPassword(value: String)
