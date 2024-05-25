@@ -3,7 +3,6 @@
  * Do not make direct changes to the file.
  */
 
-
 export type paths = Record<string, never>;
 
 export type webhooks = Record<string, never>;
@@ -14,7 +13,7 @@ export interface components {
     User: {
       user_id?: number;
       /**
-       * @description This id can be modified by user 
+       * @description This id can be modified by user
        * @example getupmax
        */
       account_id: string;
@@ -25,7 +24,7 @@ export interface components {
       /** @example coffee lover */
       introduction?: string;
       /**
-       * @description icon url 
+       * @description icon url
        * @example https://example.com/icon.png
        */
       icon_url?: string;
@@ -37,6 +36,8 @@ export interface components {
   headers: never;
   pathItems: never;
 }
+
+export type $defs = Record<string, never>;
 
 export type external = Record<string, never>;
 

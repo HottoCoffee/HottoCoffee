@@ -3,7 +3,6 @@
  * Do not make direct changes to the file.
  */
 
-
 export type paths = Record<string, never>;
 
 export type webhooks = Record<string, never>;
@@ -12,7 +11,7 @@ export interface components {
   schemas: {
     /** @description Timeline Schema */
     Timeline: {
-      posts?: (external["post.yaml"]["components"]["schemas"]["Post"])[];
+      posts?: external["post.yaml"]["components"]["schemas"]["Post"][];
       /** @description whether there is next page */
       has_next?: boolean;
     };
@@ -24,8 +23,89 @@ export interface components {
   pathItems: never;
 }
 
+export type $defs = Record<string, never>;
+
 export interface external {
-  "post.yaml": Record<string, never>
+  "post.yaml": {
+    paths: Record<string, never>;
+    webhooks: Record<string, never>;
+    components: {
+      schemas: {
+        /** @description Post Schema */
+        Post: {
+          post_id?: number;
+          user_info?: {
+            readonly user_id?: number;
+            /** @example getupmax */
+            readonly account_id?: string;
+            /** @example tasuku_nakagawa */
+            readonly display_name?: string;
+            /** @example https://example.com/icon.png */
+            readonly icon_url?: string;
+          };
+          /**
+           * @description where you drank coffee
+           * @example home
+           */
+          location?: string;
+          /**
+           * @description where coffee bean from
+           * @example Columbia
+           */
+          origin: string;
+          /**
+           * @description how to brew
+           * @example Black
+           */
+          way_to_brew?: string;
+          /**
+           * @description roast level
+           * @enum {string}
+           */
+          roast_level?:
+            | "light"
+            | "cinnamon"
+            | "medium"
+            | "high"
+            | "city"
+            | "full_city"
+            | "french"
+            | "italian";
+          /**
+           * @description temperature to brew
+           * @example 95
+           */
+          temperature?: number;
+          /**
+           * @description grams of coffee
+           * @example 10
+           */
+          grams_of_coffee?: number;
+          /**
+           * @description grams of water
+           * @example 200
+           */
+          grams_of_water?: number;
+          /**
+           * @description how fine the coffee is ground
+           * @enum {string}
+           */
+          grind_size?: "finest" | "fine" | "medium-fine" | "medium" | "coarse";
+          /**
+           * @description impressions of the coffee
+           * @example very bitter
+           */
+          impression?: string;
+        };
+      };
+      responses: never;
+      parameters: never;
+      requestBodies: never;
+      headers: never;
+      pathItems: never;
+    };
+    $defs: Record<string, never>;
+  };
 }
 
 export type operations = Record<string, never>;

@@ -35,7 +35,7 @@ components:
           description: how to brew
           example: Black
         roast_level:
-          type: enum
+          type: string
           description: roast level
           enum:
             - light
@@ -59,7 +59,7 @@ components:
           description: grams of water
           example: 200
         grind_size:
-          type: enum
+          type: string
           description: how fine the coffee is ground
           enum:
             - finest

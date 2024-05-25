@@ -3,7 +3,6 @@
  * Do not make direct changes to the file.
  */
 
-
 export type paths = Record<string, never>;
 
 export type webhooks = Record<string, never>;
@@ -18,52 +17,60 @@ export interface components {
         /** @example getupmax */
         readonly account_id?: string;
         /** @example tasuku_nakagawa */
-        readonly dispaly_name?: string;
+        readonly display_name?: string;
         /** @example https://example.com/icon.png */
         readonly icon_url?: string;
       };
       /**
-       * @description where you drank coffee 
+       * @description where you drank coffee
        * @example home
        */
       location?: string;
       /**
-       * @description where coffee bean from 
+       * @description where coffee bean from
        * @example Columbia
        */
       origin: string;
       /**
-       * @description how to brew 
+       * @description how to brew
        * @example Black
        */
       way_to_brew?: string;
       /**
-       * @description roast level 
-       * @enum {enum}
+       * @description roast level
+       * @enum {string}
        */
-      roast_level?: light | cinnamon | medium | high | city | full_city | french | italian;
+      roast_level?:
+        | "light"
+        | "cinnamon"
+        | "medium"
+        | "high"
+        | "city"
+        | "full_city"
+        | "french"
+        | "italian";
       /**
-       * @description temperature to brew 
+       * @description temperature to brew
        * @example 95
        */
       temperature?: number;
       /**
-       * @description grams of coffee 
+       * @description grams of coffee
        * @example 10
        */
       grams_of_coffee?: number;
       /**
-       * @description grams of water 
+       * @description grams of water
        * @example 200
        */
       grams_of_water?: number;
       /**
-       * @description how fine the coffee is ground 
-       * @enum {enum}
+       * @description how fine the coffee is ground
+       * @enum {string}
        */
-      grind_size?: finest | fine | medium-fine | medium | coarse;
+      grind_size?: "finest" | "fine" | "medium-fine" | "medium" | "coarse";
       /**
-       * @description impressions of the coffee 
+       * @description impressions of the coffee
        * @example very bitter
        */
       impression?: string;
@@ -75,6 +82,8 @@ export interface components {
   headers: never;
   pathItems: never;
 }
+
+export type $defs = Record<string, never>;
 
 export type external = Record<string, never>;
 
