@@ -19,6 +19,8 @@ export interface components {
       account_id: string;
       /** @example sample@example.com */
       email: string;
+      /** @example example */
+      password?: string;
       /** @example tasuku_nakagawa */
       display_name: string;
       /** @example coffee lover */
