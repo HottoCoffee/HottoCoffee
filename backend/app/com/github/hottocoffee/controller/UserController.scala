@@ -13,29 +13,11 @@ import scala.util.chaining.*
 class UserController @Inject()(val controllerComponents: ControllerComponents,
                                private val userDao: UserDao)
   extends BaseController:
-  
+
   def find(accountId: String): Action[_] = Action {
-    userDao.selectByAccountId(accountId)
-    accountId match
-      case "getupmax" => UserOutput(
-        userId = 1,
-        accountId = "getupmax",
-        email = "hoge@example.com",
-        displayName = "tasuku_nakagawa",
-        introduction = Some("hoge"),
-        iconUrl = Some("https://avatars.githubusercontent.com/u/38446259?v=4"),
-      ).pipe(Json.toJson)
-        .pipe(Ok(_))
-      case "seito2" => UserOutput(
-        userId = 2,
-        accountId = "seito",
-        email = "foo@example.com",
-        displayName = "seito_hirai",
-        introduction = "fuga",
-        iconUrl = "https://avatars.githubusercontent.com/u/42537610?v=4",
-      ).pipe(Json.toJson)
-        .pipe(Ok(_))
-      case _ => NotFound
+    userDao.selectByAccountId(accountId) match
+      case Some(user) => UserOutput.from(user).pipe(Json.toJson).pipe(Ok(_))
+      case None => NotFound
   }
 
   def update(accountId: String): Action[_] = Action { request =>

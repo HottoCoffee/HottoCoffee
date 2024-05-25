@@ -9,6 +9,14 @@ import jakarta.inject.Inject
 import play.api.db.Database
 
 class UserDao @Inject()(db: Database) {
+  def selectByUserId(userId: Int): Option[User] =
+    db.withConnection { implicit connection =>
+        SQL("select * from user where id = {userId}")
+          .on("id" -> userId)
+          .as(userRecordParser.singleOpt)
+      }
+      .map(_.toUser)
+
   def selectByUserIds(userIds: List[Int]): List[User] = List.empty
 
   def selectByAccountId(accountId: String): Option[User] =
