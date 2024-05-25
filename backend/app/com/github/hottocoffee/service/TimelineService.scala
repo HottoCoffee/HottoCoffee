@@ -1,9 +1,8 @@
 package com.github.hottocoffee.service
 
-import com.github.hottocoffee.dao.{PostDao, PostRecord, UserDao, UserRecord}
+import com.github.hottocoffee.dao.{PostDao, PostRecord, UserDao}
 import com.github.hottocoffee.model.User
 import jakarta.inject.{Inject, Singleton}
-
 
 @Singleton
 class TimelineService @Inject()(val postDao: PostDao, val userDao: UserDao):

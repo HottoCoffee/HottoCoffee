@@ -1,7 +1,7 @@
 package com.github.hottocoffee.dao
 
-import anorm.SqlParser.{get, long, str}
-import anorm.{SQL, on, ~}
+import anorm.SqlParser.{get, long, scalar, str}
+import anorm.{RowParser, SQL, on, ~}
 import com.github.hottocoffee.model.User
 import com.github.hottocoffee.service.{EncryptService, EncryptedPassword, PlainPassword}
 import com.github.hottocoffee.util.{nullable2Optional, option2Nullable}
@@ -19,6 +19,14 @@ class UserDao @Inject()(db: Database) {
       }
       .filter(record => EncryptService.isCorrectPassword(password, EncryptedPassword(record.password)))
       .map(_.toUser)
+
+  def selectCountByAccountIdOrEmail(accountId: String, email: String): Long =
+    db.withConnection { implicit connection =>
+      SQL("select count(*) from user where account_id = {accountId} or email = {email}")
+        .on("accountId" -> accountId)
+        .on("email" -> email)
+        .as(scalar[Long].single)
+    }
 
   def insert(accountId: String,
              email: String,
