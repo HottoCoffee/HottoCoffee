@@ -83,7 +83,7 @@ paths:
       parameters:
         - in: path
           name: account_id
-          schema: 
+          schema:
             type: string
           required: true
       summary: get user information by account_id
