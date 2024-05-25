@@ -3,7 +3,6 @@
  * Do not make direct changes to the file.
  */
 
-
 export type paths = Record<string, never>;
 
 export type webhooks = Record<string, never>;
@@ -61,9 +60,17 @@ export interface external {
           way_to_brew?: string;
           /**
            * @description roast level
-           * @enum {enum}
+           * @enum {string}
            */
-          roast_level?: light | cinnamon | medium | high | city | full_city | french | italian;
+          roast_level?:
+            | "light"
+            | "cinnamon"
+            | "medium"
+            | "high"
+            | "city"
+            | "full_city"
+            | "french"
+            | "italian";
           /**
            * @description temperature to brew
            * @example 95
@@ -81,9 +88,9 @@ export interface external {
           grams_of_water?: number;
           /**
            * @description how fine the coffee is ground
-           * @enum {enum}
+           * @enum {string}
            */
-          grind_size?: finest | fine | medium-fine | medium | coarse;
+          grind_size?: "finest" | "fine" | "medium-fine" | "medium" | "coarse";
           /**
            * @description impressions of the coffee
            * @example very bitter

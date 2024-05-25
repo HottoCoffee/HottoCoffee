@@ -7,9 +7,10 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "biome format . --write",
+    "tsc": "tsc",
     "preview": "vite preview",
     "generate": "run-p generate:*",
-    "generate:type": "cd ../ && npx openapi-typescript 'swagger/schema/schemas/**/*.yaml' --output frontend/src/"
+    "generate:type": "cd ../ && openapi-typescript 'swagger/schema/schemas/**/*.yaml' --output frontend/src/ --enum true"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
@@ -21,6 +22,7 @@
     "@tanstack/react-query": "^5.20.5",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "openapi-typescript": "6.7.5",
     "query-string": "^8.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
