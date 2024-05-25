@@ -13,9 +13,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useSignUp } from "@/api/hooks/useSignUp";
+import { useTransitionNavigate } from "@/hook/useTransitionNavigate";
 
 export const SignUpForm = () => {
   const signUp = useSignUp();
+  const { transitionNavigate } = useTransitionNavigate();
 
   const form = useForm<SignUpSchema>({
     resolver: zodResolver(signUpSchema),
@@ -27,10 +29,17 @@ export const SignUpForm = () => {
       <form
         className="flex gap-6 flex-col w-full f-full"
         onSubmit={form.handleSubmit((state) => {
-          return signUp.mutateAsync({
-            ...state,
-            display_name: state.display_name as string,
-          });
+          return signUp.mutateAsync(
+            {
+              ...state,
+              display_name: state.display_name as string,
+            },
+            {
+              onSuccess: () => {
+                transitionNavigate("/login", "slide-to-right");
+              },
+            },
+          );
         })}
       >
         <FormField

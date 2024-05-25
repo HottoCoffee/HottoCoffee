@@ -12,9 +12,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useSignIn } from "@/api/hooks/useSignIn";
+import { useNavigate } from "react-router-dom";
 
 export const LoginForm = () => {
   const signIn = useSignIn();
+  const navigate = useNavigate();
 
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
@@ -26,9 +28,16 @@ export const LoginForm = () => {
       <form
         className="flex gap-6 flex-col w-full f-full"
         onSubmit={form.handleSubmit((state) => {
-          return signIn.mutateAsync({
-            ...state,
-          });
+          return signIn.mutateAsync(
+            {
+              ...state,
+            },
+            {
+              onSuccess: () => {
+                navigate("/");
+              },
+            },
+          );
         })}
       >
         <FormField
