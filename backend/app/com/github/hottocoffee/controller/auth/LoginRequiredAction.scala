@@ -4,7 +4,7 @@ import com.github.hottocoffee.model.User
 import jakarta.inject.Inject
 import play.api.mvc.Results.Unauthorized
 import play.api.mvc.Security.AuthenticatedBuilder
-import play.api.mvc.{AnyContent, BodyParser, BodyParsers, Session}
+import play.api.mvc.{AnyContent, BodyParser, BodyParsers, Result, Results, Session}
 
 import scala.concurrent.ExecutionContext
 
@@ -19,4 +19,7 @@ class LoginRequiredAction(parser: BodyParser[AnyContent])(implicit ec: Execution
     this(parser: BodyParser[AnyContent])
   }
 
-def saveUserToSession(user: User, session: Session): Unit = session + (USER_ID, user.id.toInt.toString)
+extension (result: Result)
+  def appendUserSession(user: User, session: Session): Result = result.withSession(
+    session + (USER_ID -> user.id.toInt.toString)
+  )
