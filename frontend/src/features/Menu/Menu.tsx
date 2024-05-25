@@ -25,7 +25,7 @@ const PATHS = [
 
 const calcDirection = (
   currentPath: string,
-  nextPath: string
+  nextPath: string,
 ): "slide-to-left" | "slide-to-right" => {
   const currentPathIndex = PATHS.findIndex((path) => path.path === currentPath);
   const nextPathIndex = PATHS.findIndex((path) => path.path === nextPath);
@@ -55,7 +55,7 @@ export const Menu = () => {
 
               transitionNavigate(
                 path.path,
-                calcDirection(currentPath, path.path)
+                calcDirection(currentPath, path.path),
               );
             }}
             className="flex gap-2 items-center"
