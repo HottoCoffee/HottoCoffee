@@ -10,14 +10,16 @@ type Response = {};
 export const useSignUp = () => {
   return useMutation<Response, Error, Payload>({
     mutationKey: ["SIGN_UP"],
-    mutationFn: (payload) => {
-      return fetch(`${API_BASE_URL}/user`, {
+    mutationFn: async (payload) => {
+      const res = await fetch(`${API_BASE_URL}/user`, {
         method: "POST",
         body: JSON.stringify(payload),
         headers: {
           "Content-Type": "application/json",
         },
       });
+
+      return res.json();
     },
     onSuccess: () => {
       toast.success("新規登録しました");

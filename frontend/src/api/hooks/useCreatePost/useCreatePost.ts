@@ -10,14 +10,16 @@ type Response = {};
 export const useCreatePost = () => {
   return useMutation<Response, Error, Payload>({
     mutationKey: ["CREATE_POST"],
-    mutationFn: (payload) => {
-      return fetch(`${API_BASE_URL}/post`, {
+    mutationFn: async (payload) => {
+      const res = await fetch(`${API_BASE_URL}/post`, {
         method: "POST",
         body: JSON.stringify(payload),
         headers: {
           "Content-Type": "application/json",
         },
       });
+
+      return res.json();
     },
     onSuccess: () => {
       toast.success("ポストしました");
