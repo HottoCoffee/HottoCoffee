@@ -1,11 +1,12 @@
 package com.github.hottocoffee.controller
 
 import com.github.hottocoffee.controller.schema.response.{PostOutput, TimelineOutput, UserInfoOutput}
-import com.github.hottocoffee.dao.{PostRecord, UserRecord}
+import com.github.hottocoffee.dao.PostRecord
 import com.github.hottocoffee.model.{CoffeeOrigin, GramsOfCoffee, GramsOfWater, GrindSize, Location, RoastLevel, Temperature, User, WayToBrew}
 import com.github.hottocoffee.service.TimelineService
 import com.github.hottocoffee.util.nullable2Optional
 import jakarta.inject.{Inject, Singleton}
+import play.api.Logger
 import play.api.libs.json.Json
 import play.api.mvc.Results.{InternalServerError, Ok}
 import play.api.mvc.{Action, BaseController, ControllerComponents}
@@ -14,6 +15,8 @@ import scala.util.chaining.*
 
 @Singleton
 class TimelineController @Inject()(val controllerComponents: ControllerComponents, val timelineService: TimelineService) extends BaseController:
+  private val logger = Logger(this.getClass)
+
   def list(lower_post_id: Option[Int], upper_post_id: Option[Int]): Action[_] = Action {
     (lower_post_id, upper_post_id) match
       case (Some(_), Some(_)) => BadRequest
@@ -24,7 +27,9 @@ class TimelineController @Inject()(val controllerComponents: ControllerComponent
           case (_, Some(upperPostId)) => timelineService.getLatestPostsOlderThan(upperPostId)
 
         timeline match
-          case Left(_) => InternalServerError
+          case Left(message) =>
+            logger.warn(message)
+            InternalServerError
           case Right((list, hasNext)) => list.map(convert).partitionMap(identity) match
             case (Nil, posts) => TimelineOutput(posts, hasNext).pipe(Json.toJson).pipe(Ok(_))
             case _ => InternalServerError
