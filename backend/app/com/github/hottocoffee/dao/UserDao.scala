@@ -12,7 +12,7 @@ class UserDao @Inject()(db: Database) {
   def selectByUserId(userId: Int): Option[User] =
     db.withConnection { implicit connection =>
         SQL("select * from user where id = {userId}")
-          .on("id" -> userId)
+          .on("userId" -> userId)
           .as(userRecordParser.singleOpt)
       }
       .map(_.toUser)
