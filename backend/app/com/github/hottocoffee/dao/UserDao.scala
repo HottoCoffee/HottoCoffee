@@ -1,7 +1,7 @@
 package com.github.hottocoffee.dao
 
 import anorm.SqlParser.{get, long, scalar, str}
-import anorm.{RowParser, SQL, on, ~}
+import anorm.{SQL, on, ~}
 import com.github.hottocoffee.model.User
 import com.github.hottocoffee.service.{EncryptService, EncryptedPassword, PlainPassword}
 import com.github.hottocoffee.util.{nullable2Optional, option2Nullable}
@@ -10,6 +10,14 @@ import play.api.db.Database
 
 class UserDao @Inject()(db: Database) {
   def selectByUserIds(userIds: List[Int]): List[User] = List.empty
+
+  def selectByAccountId(accountId: String): Option[User] =
+    db.withConnection { implicit connection =>
+        SQL("select * from user where account_id = {accountId}")
+          .on("accountId" -> accountId)
+          .as(userRecordParser.singleOpt)
+      }
+      .map(_.toUser)
 
   def selectByEmailAndPassword(email: String, password: PlainPassword): Option[User] =
     db.withConnection { implicit connection =>

@@ -1,6 +1,7 @@
 package com.github.hottocoffee.controller
 
 import com.github.hottocoffee.controller.schema.response.{UserOutput, UserRegisterInput}
+import com.github.hottocoffee.dao.UserDao
 import com.github.hottocoffee.util.value2Optional
 import jakarta.inject.{Inject, Singleton}
 import play.api.libs.json.{JsError, JsSuccess, Json}
@@ -9,8 +10,12 @@ import play.api.mvc.{Action, BaseController, ControllerComponents}
 import scala.util.chaining.*
 
 @Singleton
-class UserController @Inject()(val controllerComponents: ControllerComponents) extends BaseController:
+class UserController @Inject()(val controllerComponents: ControllerComponents,
+                               private val userDao: UserDao)
+  extends BaseController:
+  
   def find(accountId: String): Action[_] = Action {
+    userDao.selectByAccountId(accountId)
     accountId match
       case "getupmax" => UserOutput(
         userId = 1,
