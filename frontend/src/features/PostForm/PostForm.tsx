@@ -202,7 +202,7 @@ export const PostForm = (props: Props) => {
           )}
         />
 
-        <Button type="submit">Submit</Button>
+        <Button type="submit">投稿</Button>
       </form>
     </Form>
   );

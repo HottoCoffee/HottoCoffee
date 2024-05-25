@@ -3,7 +3,7 @@ import { Menu } from "../Menu/Menu";
 
 export const MainLayout = () => {
   return (
-    <div>
+    <div className="pb-32">
       <Outlet />
 
       <Menu />

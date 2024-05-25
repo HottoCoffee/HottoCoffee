@@ -10,7 +10,7 @@ export const TimelinePage = () => {
   const timeline = showTimeline.data.pages.flatMap((v) => v.posts);
 
   return (
-    <div className="grid gap-5 p-3 pb-32">
+    <div className="grid gap-5 p-3">
       {timeline.map((post, index) => {
         return (
           <>
@@ -19,6 +19,12 @@ export const TimelinePage = () => {
           </>
         );
       })}
+
+      {timeline.length === 0 && (
+        <p className="flex justify-center items-center h-full">
+          投稿はありません
+        </p>
+      )}
 
       {showTimeline.hasNextPage && (
         <Button onClick={() => showTimeline.fetchNextPage()}>もっとみる</Button>
