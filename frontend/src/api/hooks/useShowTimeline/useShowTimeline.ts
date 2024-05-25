@@ -31,6 +31,7 @@ export const useShowTimeline = (payload: Payload) => {
       const params = queryString.stringify(pageParam);
       const res = await fetch(`${API_BASE_URL}/timeline?${params}`, {
         method: "GET",
+        credentials: "include",
       });
 
       return res.json();
