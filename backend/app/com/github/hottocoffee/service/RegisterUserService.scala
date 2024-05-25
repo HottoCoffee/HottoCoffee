@@ -13,7 +13,7 @@ class RegisterUserService @Inject()(private val userDao: UserDao):
                displayName: String,
                introduction: String,
                iconUrl: String | Null): Either[String, User] =
-    val isDuplicated = userDao.selectCountByAccountIdOrEmail(accountId, email) == 0
+    val isDuplicated = userDao.selectCountByAccountIdOrEmail(accountId, email) > 0
     if isDuplicated then Left("Duplicated accountId or email")
     else Try(
       userDao.insert(
