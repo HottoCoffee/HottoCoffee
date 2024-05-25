@@ -11,6 +11,7 @@ components:
           type: string
           description: This id can be modified by user
           example: getupmax
+          readOnly: true
         email:
           type: string
           example: sample@example.com

@@ -1,10 +1,12 @@
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import { MainLayout } from "./features/MainLayout";
-import { ProfilePage } from "./pages/ProfilePage";
 
 const PostPage = lazy(() => import("./pages/PostPage"));
 const TimelinePage = lazy(() => import("./pages/TimelinePage"));
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const SignUpPage = lazy(() => import("./pages/SignUpPage"));
 
 export const router = createBrowserRouter([
   {
@@ -24,5 +26,15 @@ export const router = createBrowserRouter([
         element: <ProfilePage />,
       },
     ],
+  },
+
+  // public
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/sign-up",
+    element: <SignUpPage />,
   },
 ]);

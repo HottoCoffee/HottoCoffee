@@ -1,3 +1,5 @@
+import type { components as UserComponents } from "@/swagger/schema/schemas/user";
+
 export enum RoastLevel {
   light = "light",
   cinnamon = "cinnamon",
@@ -34,3 +36,5 @@ export interface Post {
   grind_size?: GrindSize;
   impression?: string;
 }
+
+export type User = UserComponents["schemas"]["User"];
