@@ -1,6 +1,6 @@
 package com.github.hottocoffee.controller.schema.response
 
-import com.github.hottocoffee.model.{CoffeeOrigin, GramsOfCoffee, GramsOfWater, GrindSize, Location, RoastLevel, Temperature, WayToBrew}
+import com.github.hottocoffee.model.coffee.{CoffeeOrigin, GramsOfCoffee, GramsOfWater, GrindSize, Location, RoastLevel, Temperature, WayToBrew}
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
 import play.api.libs.json.{JsError, JsNumber, JsPath, JsResult, JsString, JsSuccess, Reads, Writes, __}
 

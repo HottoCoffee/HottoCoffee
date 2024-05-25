@@ -2,7 +2,8 @@ package com.github.hottocoffee.controller
 
 import com.github.hottocoffee.controller.schema.response.{PostOutput, TimelineOutput, UserInfoOutput}
 import com.github.hottocoffee.dao.PostRecord
-import com.github.hottocoffee.model.{CoffeeOrigin, GramsOfCoffee, GramsOfWater, GrindSize, Location, RoastLevel, Temperature, User, WayToBrew}
+import com.github.hottocoffee.model.User
+import com.github.hottocoffee.model.coffee.{CoffeeOrigin, GramsOfCoffee, GramsOfWater, GrindSize, Location, RoastLevel, Temperature, WayToBrew}
 import com.github.hottocoffee.service.TimelineService
 import com.github.hottocoffee.util.nullable2Optional
 import jakarta.inject.{Inject, Singleton}

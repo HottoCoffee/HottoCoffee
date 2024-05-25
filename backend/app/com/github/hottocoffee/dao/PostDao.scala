@@ -2,7 +2,7 @@ package com.github.hottocoffee.dao
 
 import anorm.*
 import anorm.SqlParser.*
-import com.github.hottocoffee.model.{CoffeeOrigin, GramsOfCoffee, GramsOfWater, GrindSize, Location, RoastLevel, Temperature, WayToBrew}
+import com.github.hottocoffee.model.coffee.{CoffeeOrigin, GramsOfCoffee, GramsOfWater, GrindSize, Location, RoastLevel, Temperature, WayToBrew}
 import jakarta.inject.Inject
 import play.api.db.Database
 

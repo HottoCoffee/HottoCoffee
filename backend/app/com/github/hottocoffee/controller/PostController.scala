@@ -3,7 +3,7 @@ package com.github.hottocoffee.controller
 import com.github.hottocoffee.controller.auth.LoginRequiredAction
 import com.github.hottocoffee.controller.schema.response.{PostInput, PostOutput, UserInfoOutput}
 import com.github.hottocoffee.dao.PostDao
-import com.github.hottocoffee.model.{CoffeeOrigin, Location, RoastLevel, WayToBrew}
+import com.github.hottocoffee.model.coffee.{CoffeeOrigin, Location, RoastLevel, WayToBrew}
 import com.github.hottocoffee.util.value2Optional
 import jakarta.inject.{Inject, Singleton}
 import play.api.libs.json.{JsError, JsSuccess, Json}

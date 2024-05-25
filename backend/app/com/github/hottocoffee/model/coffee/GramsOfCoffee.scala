@@ -1,4 +1,4 @@
-package com.github.hottocoffee.model
+package com.github.hottocoffee.model.coffee
 
 /**
  * How much weight (gram) of coffee beans are used to brew the coffee

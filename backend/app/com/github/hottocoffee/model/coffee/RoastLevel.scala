@@ -1,4 +1,4 @@
-package com.github.hottocoffee.model
+package com.github.hottocoffee.model.coffee
 
 import scala.util.Left
 
