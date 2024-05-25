@@ -1,32 +1,28 @@
 import { useShowTimeline } from "@/api/hooks/useShowTimeline/useShowTimeline";
-import { Post, RoastLevel, GrindSize } from "@/api/interfaces";
+import { Button } from "@/components/ui/button";
 import { TimelineCard } from "@/features/TimelineCard";
 
 export const TimelinePage = () => {
-  //   const showTimeline = useShowTimeline({
-  //     order: "asc",
-  //   });
+  const showTimeline = useShowTimeline({
+    order: "asc",
+  });
 
-  //   const timeline = showTimeline.data.pages.flatMap((v) => v.posts);
-
-  const post: Post = {
-    post_id: 1,
-    location: "スターバックス",
-    way_to_brew: "ラテ",
-    roast_level: RoastLevel.light,
-    temperature: 100,
-    grams_of_coffee: 100,
-    grind_size: GrindSize.finest,
-    impression: "感想",
-    origin: "ブラジル",
-  };
+  const timeline = showTimeline.data.pages.flatMap((v) => v.posts);
 
   return (
-    <div>
-      <TimelineCard key={post.post_id} post={post} />
-      {/* {timeline.map((post) => {
-        return <TimelineCard key={post.post_id} post={post} />;
-      })} */}
+    <div className="grid gap-5 p-3 pb-32">
+      {timeline.map((post, index) => {
+        return (
+          <>
+            <TimelineCard key={post.post_id} post={post} />
+            {timeline.length !== index + 1 && <hr />}
+          </>
+        );
+      })}
+
+      {showTimeline.hasNextPage && (
+        <Button onClick={() => showTimeline.fetchNextPage()}>もっとみる</Button>
+      )}
     </div>
   );
 };

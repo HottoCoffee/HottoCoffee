@@ -16,7 +16,7 @@ export const postFormSchema = z.object({
       z
         .number()
         .min(0, "0以上で入力してください")
-        .max(100, "100以下で入力してください")
+        .max(100, "100以下で入力してください"),
     )
     .optional(),
   gramsOfCoffee: z
