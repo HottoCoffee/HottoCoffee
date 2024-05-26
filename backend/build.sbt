@@ -17,6 +17,8 @@ libraryDependencies ++= Seq(
 
   "org.mindrot" % "jbcrypt" % "0.4",
 
+  "com.github.jwt-scala" %% "jwt-core" % "10.0.1",
+
   "org.playframework.anorm" %% "anorm" % "2.7.0",
 
   "org.scalatestplus.play" %% "scalatestplus-play" % "6.0.0" % Test,
