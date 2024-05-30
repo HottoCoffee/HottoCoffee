@@ -15,6 +15,7 @@ val jwtKey = "secret"
 class LoginRequiredAction(parser: BodyParser[AnyContent])(implicit ec: ExecutionContext)
   extends AuthenticatedBuilder[Int]({ header =>
     header.headers.get("Authorization")
+      .map(_.replace("Bearer ", ""))
       .flatMap(token => Jwt.decode(token, jwtKey, Seq(JwtAlgorithm.HS256)).toOption)
       .flatMap(claim => (Json.parse(claim.content) \ "id").toOption)
       .flatMap(jsValue => jsValue.toString.toIntOption)

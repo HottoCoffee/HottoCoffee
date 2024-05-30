@@ -17,7 +17,13 @@ class UserDao @Inject()(db: Database) {
       }
       .map(_.toUser)
 
-  def selectByUserIds(userIds: List[Int]): List[User] = List.empty
+  def selectByUserIds(userIds: List[Int]): List[User] =
+    db.withConnection { implicit connection =>
+        SQL("select * from user where id in ({userIds})")
+          .on("userIds" -> userIds)
+          .as(userRecordParser.*)
+      }
+      .map(_.toUser)
 
   def selectByAccountId(accountId: String): Option[User] =
     db.withConnection { implicit connection =>
