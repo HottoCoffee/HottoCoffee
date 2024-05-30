@@ -1,4 +1,3 @@
-import { API_BASE_URL } from "@/api/config";
 import { Post } from "@/api/interfaces";
 import { useApi } from "@/api/utils";
 import { InfiniteData, useSuspenseInfiniteQuery } from "@tanstack/react-query";
@@ -37,7 +36,7 @@ export const useShowTimeline = (payload: Payload) => {
         {
           path: `/timeline?${params}`,
         },
-        "GET",
+        "GET"
       );
     },
     initialPageParam: {},
