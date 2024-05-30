@@ -1,5 +1,5 @@
-import { API_BASE_URL } from "@/api/config";
 import { Post } from "@/api/interfaces";
+import { useApi } from "@/api/utils";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
@@ -8,19 +8,18 @@ type Payload = Omit<Post, "post_id">;
 type Response = {};
 
 export const useCreatePost = () => {
+  const { api } = useApi();
+
   return useMutation<Response, Error, Payload>({
     mutationKey: ["CREATE_POST"],
     mutationFn: async (payload) => {
-      const res = await fetch(`${API_BASE_URL}/post`, {
-        method: "POST",
-        body: JSON.stringify(payload),
-        headers: {
-          "Content-Type": "application/json",
+      return api<Payload, Response>(
+        {
+          path: "/post",
+          payload,
         },
-        credentials: "include",
-      });
-
-      return res.json();
+        "POST",
+      );
     },
     onSuccess: () => {
       toast.success("ポストしました");

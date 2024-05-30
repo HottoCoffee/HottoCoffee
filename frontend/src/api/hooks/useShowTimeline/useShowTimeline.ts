@@ -1,5 +1,6 @@
 import { API_BASE_URL } from "@/api/config";
 import { Post } from "@/api/interfaces";
+import { useApi } from "@/api/utils";
 import { InfiniteData, useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import queryString from "query-string";
 
@@ -19,6 +20,8 @@ type PageParam = {
 };
 
 export const useShowTimeline = (payload: Payload) => {
+  const { api } = useApi();
+
   return useSuspenseInfiniteQuery<
     Response,
     Error,
@@ -29,12 +32,13 @@ export const useShowTimeline = (payload: Payload) => {
     queryKey: [QUERY_KEY_SHOW_TIMELINE],
     queryFn: async ({ pageParam }) => {
       const params = queryString.stringify(pageParam);
-      const res = await fetch(`${API_BASE_URL}/timeline?${params}`, {
-        method: "GET",
-        credentials: "include",
-      });
 
-      return res.json();
+      return api<Payload, Response>(
+        {
+          path: `/timeline?${params}`,
+        },
+        "GET",
+      );
     },
     initialPageParam: {},
     getNextPageParam: (last): PageParam | undefined => {
