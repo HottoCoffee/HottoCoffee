@@ -1,4 +1,5 @@
-import { API_BASE_URL } from "@/api/config";
+import { useApi } from "@/api/utils";
+import { useToken } from "@/hook/useToken";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
@@ -12,19 +13,20 @@ type Response = {
 };
 
 export const useSignIn = () => {
+  const { api } = useApi();
+  const [_, setLocalStorage] = useToken();
+
   return useMutation<Response, Error, Payload>({
     mutationKey: ["SIGN_IN"],
     mutationFn: async (payload) => {
-      const res = await fetch(`${API_BASE_URL}/user/sign-in`, {
-        method: "POST",
-        body: JSON.stringify(payload),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
+      const res = await api<Payload, Response>({
+        path: "/user/sign-in",
+        payload,
       });
 
-      return res.json();
+      setLocalStorage({ token: res.token });
+
+      return res;
     },
     onSuccess: () => {
       toast.success("ログインしました");
