@@ -1,25 +1,26 @@
 package com.github.hottocoffee.controller.auth
 
-import com.github.hottocoffee.model.User
 import jakarta.inject.Inject
+import pdi.jwt.{Jwt, JwtAlgorithm}
+import play.api.libs.json.Json
 import play.api.mvc.Results.Unauthorized
 import play.api.mvc.Security.AuthenticatedBuilder
-import play.api.mvc.{AnyContent, BodyParser, BodyParsers, Result, Results, Session}
+import play.api.mvc.{AnyContent, BodyParser, BodyParsers, Results}
 
+import scala.annotation.unused
 import scala.concurrent.ExecutionContext
 
-val USER_ID = "user_id"
+val jwtKey = "secret"
 
 class LoginRequiredAction(parser: BodyParser[AnyContent])(implicit ec: ExecutionContext)
-  extends AuthenticatedBuilder[Int]({
-    _.session.get(USER_ID).flatMap(_.toIntOption)
+  extends AuthenticatedBuilder[Int]({ header =>
+    header.headers.get("Authorization")
+      .flatMap(token => Jwt.decode(token, jwtKey, Seq(JwtAlgorithm.HS256)).toOption)
+      .flatMap(claim => (Json.parse(claim.content) \ "id").toOption)
+      .flatMap(jsValue => jsValue.toString.toIntOption)
   }, parser, * => Unauthorized):
+
   @Inject()
-  def this(parser: BodyParsers.Default)(implicit ec: ExecutionContext) = {
+  def this(parser: BodyParsers.Default)(implicit @unused ec: ExecutionContext) = {
     this(parser: BodyParser[AnyContent])
   }
-
-extension (result: Result)
-  def appendUserSession(user: User, session: Session): Result = result.withSession(
-    session + (USER_ID -> user.id.toInt.toString)
-  )

@@ -1,16 +1,17 @@
 package com.github.hottocoffee.controller
 
-import com.github.hottocoffee.controller.auth.appendUserSession
 import com.github.hottocoffee.controller.schema.response.{UserOutput, UserRegisterInput, UserSignInInput}
 import com.github.hottocoffee.dao.UserDao
 import com.github.hottocoffee.model.PlainPassword
 import com.github.hottocoffee.service.RegisterUserService
 import com.github.hottocoffee.util.{option2Nullable, value2Optional}
 import jakarta.inject.{Inject, Singleton}
+import pdi.jwt.{Jwt, JwtAlgorithm, JwtClaim}
 import play.api.Logger
 import play.api.libs.json.{JsError, JsSuccess, Json}
 import play.api.mvc.{Action, BaseController, ControllerComponents}
 
+import java.time.Clock
 import scala.util.chaining.*
 
 @Singleton
@@ -40,7 +41,7 @@ class UserAuthController @Inject()(val controllerComponents: ControllerComponent
                 BadRequest
               case Right(user) =>
                 UserOutput.from(user).pipe(Json.toJson)
-                  .pipe(Created(_).appendUserSession(user, request.session))
+                  .pipe(Created(_))
   }
 
   def signIn(): Action[_] = Action { request =>
@@ -54,6 +55,13 @@ class UserAuthController @Inject()(val controllerComponents: ControllerComponent
             case Right(validPlainPassword) => userDao.selectByEmailAndPassword(body.email, validPlainPassword) match
               case None => BadRequest
               case Some(user) =>
-                UserOutput.from(user).pipe(Json.toJson)
-                  .pipe(Ok(_).appendUserSession(user, request.session))
+                Json.obj("token" -> generateJwt(user.id))
+                  .pipe(Ok(_))
   }
+
+  private def generateJwt(userId: Long): String =
+    Jwt.encode(
+      JwtClaim(Json.obj("id" -> userId).toString).issuedIn(60 * 60)(Clock.systemUTC()),
+      "secret",
+      JwtAlgorithm.HS256,
+    )
