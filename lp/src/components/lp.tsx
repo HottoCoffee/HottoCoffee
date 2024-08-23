@@ -5,6 +5,7 @@
  */
 import Link from "next/link";
 import { SVGProps } from "react";
+import Image from "next/image";
 
 export default function LP() {
   return (
@@ -73,12 +74,19 @@ export default function LP() {
                   </Link>
                 </div>
               </div>
-              <img
-                src="/placeholder.svg"
+              {/* <img
+                src="/"
                 width="550"
                 height="550"
                 alt="Hero"
                 className="mx-auto aspect-video overflow-hidden rounded-xl object-bottom sm:w-full lg:order-last lg:aspect-square"
+              /> */}
+              <Image
+                src="/hero.png"
+                alt="Hero"
+                width="550"
+                height="550"
+                sizes="100vw"
               />
             </div>
           </div>
