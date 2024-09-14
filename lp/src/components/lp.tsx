@@ -52,9 +52,9 @@ export default function LP() {
       </header>
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
+          <div className="px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
-              <div className="flex flex-col justify-center space-y-4">
+              <div className="flex flex-col justify-center space-y-4 items-center lg:items-start">
                 <div className="space-y-2">
                   <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
                     Stay Caffeinated, Stay Focused
@@ -83,6 +83,7 @@ export default function LP() {
               /> */}
               <Image
                 src="/hero.png"
+                className="mx-auto"
                 alt="Hero"
                 width="550"
                 height="550"
