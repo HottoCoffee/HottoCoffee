@@ -31,7 +31,7 @@ class TimelineController @Inject()(val controllerComponents: ControllerComponent
           case Left(message) =>
             logger.warn(message)
             InternalServerError
-          case Right((list, hasNext)) => list.map(convert).partitionMap(identity) match
+          case Right((list, hasNext)) => list.tapEach(println(_)).map(convert).tapEach(println(_)).partitionMap(identity) match
             case (Nil, posts) => TimelineOutput(posts, hasNext).pipe(Json.toJson).pipe(Ok(_))
             case _ => InternalServerError
   }
@@ -41,7 +41,7 @@ class TimelineController @Inject()(val controllerComponents: ControllerComponent
       location <- postRecord.location.toOptionEither(Location(_))
       origin <- CoffeeOrigin(postRecord.origin)
       wayToBrew <- postRecord.wayToBrew.toOptionEither(WayToBrew(_))
-      roastLevel <- postRecord.wayToBrew.toOptionEither(RoastLevel(_))
+      roastLevel <- postRecord.roastLevel.toOptionEither(RoastLevel(_))
       temperature <- postRecord.temperature.toOptionEither(Temperature(_))
       gramsOfCoffee <- postRecord.gramsOfCoffee.toOptionEither(GramsOfCoffee(_))
       gramsOfWater <- postRecord.gramsOfWater.toOptionEither(GramsOfWater(_))
