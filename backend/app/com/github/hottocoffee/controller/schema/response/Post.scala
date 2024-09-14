@@ -65,11 +65,13 @@ implicit val wayToBrewReads: Reads[WayToBrew] = {
 implicit val wayToBrewWrites: Writes[WayToBrew] = o => JsString(o.value)
 
 implicit val roastLevelReads: Reads[RoastLevel] = {
-  case JsString(v) if RoastLevel.values.exists(_.toString == v) =>
-    JsSuccess(RoastLevel.valueOf(v))
+  case JsString(v) =>
+    RoastLevel(v) match
+      case Right(value) => JsSuccess(value)
+      case _ => JsError()
   case _ => JsError()
 }
-implicit val roastLevelWrites: Writes[RoastLevel] = o => JsString(o.toString)
+implicit val roastLevelWrites: Writes[RoastLevel] = o => JsString(o.value)
 
 implicit val temperatureReads: Reads[Temperature] = {
   case JsNumber(v) =>
@@ -101,13 +103,15 @@ implicit val gramsOfWaterReads: Reads[GramsOfWater] = {
 }
 implicit val gramsOfWaterWrites: Writes[GramsOfWater] = o => JsNumber(o.value)
 
-
 implicit val grindSizeReads: Reads[GrindSize] = {
-  case JsString(v) if GrindSize.values.exists(_.toString == v) =>
-    JsSuccess(GrindSize.valueOf(v))
-  case _ => JsError()
+  case JsString(v) =>
+    GrindSize(v) match
+      case Right(value) => JsSuccess(value)
+      case _ => JsError()
+  case a =>
+    JsError()
 }
-implicit val grindSizeWrites: Writes[GrindSize] = o => JsString(o.toString)
+implicit val grindSizeWrites: Writes[GrindSize] = o => JsString(o.value)
 
 object PostInput:
   implicit val reads: Reads[PostInput] = (

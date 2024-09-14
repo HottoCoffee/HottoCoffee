@@ -41,7 +41,7 @@ class TimelineController @Inject()(val controllerComponents: ControllerComponent
       location <- postRecord.location.toOptionEither(Location(_))
       origin <- CoffeeOrigin(postRecord.origin)
       wayToBrew <- postRecord.wayToBrew.toOptionEither(WayToBrew(_))
-      roastLevel <- postRecord.wayToBrew.toOptionEither(RoastLevel(_))
+      roastLevel <- postRecord.roastLevel.toOptionEither(RoastLevel(_))
       temperature <- postRecord.temperature.toOptionEither(Temperature(_))
       gramsOfCoffee <- postRecord.gramsOfCoffee.toOptionEither(GramsOfCoffee(_))
       gramsOfWater <- postRecord.gramsOfWater.toOptionEither(GramsOfWater(_))

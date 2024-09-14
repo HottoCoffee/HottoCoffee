@@ -7,9 +7,9 @@ import com.github.hottocoffee.service.RegisterUserService
 import com.github.hottocoffee.util.{option2Nullable, value2Optional}
 import jakarta.inject.{Inject, Singleton}
 import pdi.jwt.{Jwt, JwtAlgorithm, JwtClaim}
-import play.api.Logger
 import play.api.libs.json.{JsError, JsSuccess, Json}
 import play.api.mvc.{Action, BaseController, ControllerComponents}
+import play.api.{Configuration, Logger}
 
 import java.time.Clock
 import scala.util.chaining.*
@@ -17,7 +17,8 @@ import scala.util.chaining.*
 @Singleton
 class UserAuthController @Inject()(val controllerComponents: ControllerComponents,
                                    private val registerUserService: RegisterUserService,
-                                   private val userDao: UserDao) extends BaseController:
+                                   private val userDao: UserDao,
+                                   private val configuration: Configuration) extends BaseController:
   private val logger = Logger(this.getClass)
 
   def register(): Action[_] = Action { request =>
@@ -62,6 +63,6 @@ class UserAuthController @Inject()(val controllerComponents: ControllerComponent
   private def generateJwt(userId: Long): String =
     Jwt.encode(
       JwtClaim(Json.obj("id" -> userId).toString).issuedIn(60 * 60)(Clock.systemUTC()),
-      "secret",
+      configuration.get[String]("app.jwt.key"),
       JwtAlgorithm.HS256,
     )
