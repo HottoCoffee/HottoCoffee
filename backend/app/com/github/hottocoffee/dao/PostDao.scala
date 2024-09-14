@@ -29,11 +29,11 @@ class PostDao @Inject()(db: Database):
           "location" -> location.map(_.value),
           "origin" -> origin.value,
           "wayToBrew" -> wayToBrew.map(_.value),
-          "roastLevel" -> roastLevel.map(_.toString),
+          "roastLevel" -> roastLevel.map(_.value),
           "temperature" -> temperature.map(_.value),
           "gramsOfCoffee" -> gramsOfCoffee.map(_.value),
           "gramsOfWater" -> gramsOfWater.map(_.value),
-          "grindSize" -> grindSize.map(_.toString),
+          "grindSize" -> grindSize.map(_.value),
           "impression" -> impression,
         )
         .executeInsert()
