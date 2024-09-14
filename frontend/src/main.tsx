@@ -30,5 +30,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       pauseOnHover
       theme="colored"
     />
-  </React.StrictMode>,
+  </React.StrictMode>
 );
