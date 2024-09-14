@@ -31,7 +31,7 @@ class TimelineController @Inject()(val controllerComponents: ControllerComponent
           case Left(message) =>
             logger.warn(message)
             InternalServerError
-          case Right((list, hasNext)) => list.tapEach(println(_)).map(convert).tapEach(println(_)).partitionMap(identity) match
+          case Right((list, hasNext)) => list.map(convert).partitionMap(identity) match
             case (Nil, posts) => TimelineOutput(posts, hasNext).pipe(Json.toJson).pipe(Ok(_))
             case _ => InternalServerError
   }
