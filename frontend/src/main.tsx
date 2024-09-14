@@ -13,7 +13,7 @@ const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <Suspense fallback={<p>loading...</p>}>
+      <Suspense fallback={null}>
         <RouterProvider router={router} />
       </Suspense>
     </QueryClientProvider>
@@ -30,5 +30,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       pauseOnHover
       theme="colored"
     />
-  </React.StrictMode>,
+  </React.StrictMode>
 );
