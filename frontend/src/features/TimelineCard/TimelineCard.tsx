@@ -11,11 +11,12 @@ export const TimelineCard = (props: Props) => {
   return (
     <div className="mx-auto bg-white p-4 w-full">
       <div className="flex items-center space-x-4">
-        <img
+        {/* TODO: Set profile image */}
+        {/* <img
           src="https://via.placeholder.com/50"
           alt="Profile Picture"
           className="w-12 h-12 rounded-full"
-        />
+        /> */}
         <div>
           <h2 className="text-lg font-semibold">
             {post.user_info?.display_name}

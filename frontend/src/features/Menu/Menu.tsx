@@ -4,6 +4,7 @@ import { RiTimelineView } from "react-icons/ri";
 import { MdOutlinePostAdd } from "react-icons/md";
 import { useLocation } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
+import clsx from "clsx";
 
 const PATHS = [
   {
@@ -25,7 +26,7 @@ const PATHS = [
 
 const calcDirection = (
   currentPath: string,
-  nextPath: string,
+  nextPath: string
 ): "slide-to-left" | "slide-to-right" => {
   const currentPathIndex = PATHS.findIndex((path) => path.path === currentPath);
   const nextPathIndex = PATHS.findIndex((path) => path.path === nextPath);
@@ -55,10 +56,12 @@ export const Menu = () => {
 
               transitionNavigate(
                 path.path,
-                calcDirection(currentPath, path.path),
+                calcDirection(currentPath, path.path)
               );
             }}
-            className="flex gap-2 items-center"
+            className={clsx("flex gap-2 items-center", {
+              "shadow-inner-strong": currentPath === path.path,
+            })}
           >
             {path.icon}
             <span>{path.label}</span>
