@@ -19,7 +19,10 @@ export const TimelineCard = (props: Props) => {
         <div>
           <h2 className="text-lg font-semibold">
             {post.user_info?.display_name}
-            <span className="text-gray-500">@{post.user_info?.user_id}</span>
+            <span className="text-gray-500">
+              {" "}
+              @{post.user_info?.account_id}
+            </span>
           </h2>
         </div>
       </div>
