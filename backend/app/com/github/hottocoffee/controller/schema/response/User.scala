@@ -48,6 +48,17 @@ object UserRegisterInput:
       (JsPath \ "icon_url").readNullable[String]
     )(UserRegisterInput.apply _)
 
+  case class UserUpdateInput(displayName: String,
+                             introduction: Option[String],
+                             iconUrl: Option[String])
+
+  object UserUpdateInput:
+    implicit val reads: Reads[UserUpdateInput] = (
+      (JsPath \ "display_name").read[String] ~
+        (JsPath \ "introduction").readNullable[String] ~
+        (JsPath \ "icon_url").readNullable[String]
+      )(UserUpdateInput.apply _)
+
 case class UserSignInInput(email: String, password: String)
 
 object UserSignInInput:

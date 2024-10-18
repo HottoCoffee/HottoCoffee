@@ -75,6 +75,23 @@ class UserDao @Inject()(db: Database) {
         .executeInsert()
     }
     optionId.map(id => User(id, accountId, email, displayName, introduction, iconUrl))
+
+  def update(user: User): Unit =
+    db.withConnection { implicit connection =>
+      SQL(
+        """
+          update user set display_name = {displayName}, introduction = {introduction}, icon_url = {iconUrl}
+          where user_id = {userId}
+        """
+      )
+        .on(
+          "userId" -> user.id,
+          "displayName" -> user.displayName,
+          "introduction" -> user.introduction,
+          "iconUrl" -> nullable2Optional(user.iconUrl)
+        )
+        .executeUpdate()
+    }
 }
 
 private case class UserRecord(id: Long,
