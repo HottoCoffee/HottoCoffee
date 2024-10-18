@@ -3,7 +3,7 @@ POST          /user/sign-in           com.github.hottocoffee.controller.UserAuth
 
 GET           /user                   com.github.hottocoffee.controller.UserController.currentUser()
 GET           /user/:accountId        com.github.hottocoffee.controller.UserController.find(accountId: String)
-PUT           /user/:accountId        com.github.hottocoffee.controller.UserController.update(accountId: String)
+PUT           /user                   com.github.hottocoffee.controller.UserController.update()
 
 POST          /post                   com.github.hottocoffee.controller.PostController.post()
 
