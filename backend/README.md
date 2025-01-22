@@ -7,7 +7,8 @@
 
 ## Local development
 
-1. `sbt run`
+1. `docker compose up -d mysql`
+2. `sbt run`
 
 ## Deploy
 
