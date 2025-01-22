@@ -61,7 +61,7 @@ class UserDao @Inject()(db: Database) {
     val optionId: Option[Long] = db.withConnection { implicit connection =>
       SQL(
         """
-          insert into user (account_id, email, password, display_name, introduction, icon_url)
+          insert into user (account_id, email, password, display_name, introduction, icon_image_key)
           values ({accountId}, {email}, {password}, {displayName}, {introduction}, {iconUrl})
         """
       )
@@ -94,7 +94,7 @@ private val userRecordParser = {
     str("user.password") ~
     str("user.display_name") ~
     str("user.introduction") ~
-    get[Option[String]]("user.icon_url")
+    get[Option[String]]("user.icon_image_key")
 } map {
   case id ~ accountId ~ email ~ password ~ displayName ~ introduction ~ iconUrl =>
     UserRecord(

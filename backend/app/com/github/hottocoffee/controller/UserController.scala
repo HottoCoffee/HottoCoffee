@@ -39,7 +39,7 @@ class UserController @Inject()(val controllerComponents: ControllerComponents,
             email = "hoge@example.com",
             displayName = "tasuku_nakagawa",
             introduction = "hoge",
-            iconUrl = "https://avatars.githubusercontent.com/u/38446259?v=4",
+            iconImageKey = "https://avatars.githubusercontent.com/u/38446259?v=4",
           ).pipe(Json.toJson)
             .pipe(Ok(_))
   }

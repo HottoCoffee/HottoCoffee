@@ -1,10 +1,10 @@
 package com.github.hottocoffee.controller.schema.response
 
 import com.github.hottocoffee.model.User
-import com.github.hottocoffee.model.coffee.{CoffeeOrigin, GramsOfCoffee, GramsOfWater, GrindSize, Location, RoastLevel, Temperature, WayToBrew}
+import com.github.hottocoffee.model.coffee.*
 import com.github.hottocoffee.util.nullable2Optional
 import play.api.libs.functional.syntax.toFunctionalBuilderOps
-import play.api.libs.json.{JsError, JsNumber, JsPath, JsResult, JsString, JsSuccess, Reads, Writes, __}
+import play.api.libs.json.*
 
 case class PostInput(location: Option[Location],
                      origin: CoffeeOrigin,
@@ -149,7 +149,7 @@ object UserInfoOutput:
     (JsPath \ "user_id").write[Int] ~
       (JsPath \ "account_id").write[String] ~
       (JsPath \ "display_name").write[String] ~
-      (JsPath \ "icon_url").writeNullable[String]
+      (JsPath \ "icon_image_key").writeNullable[String]
     )(o => (
     o.userId, o.accountId, o.displayName, o.iconUrl
   ))
@@ -158,5 +158,5 @@ object UserInfoOutput:
     user.id.toInt,
     user.accountId,
     user.displayName,
-    user.iconUrl,
+    user.iconImageKey,
   )

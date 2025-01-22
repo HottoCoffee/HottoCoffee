@@ -10,7 +10,7 @@ case class UserOutput(userId: Int,
                       email: String,
                       displayName: String,
                       introduction: Option[String],
-                      iconUrl: Option[String])
+                      iconImageKey: Option[String])
 
 object UserOutput:
   implicit val writes: Writes[UserOutput] = (
@@ -19,8 +19,8 @@ object UserOutput:
       (JsPath \ "email").write[String] ~
       (JsPath \ "display_name").write[String] ~
       (JsPath \ "introduction").writeNullable[String] ~
-      (JsPath \ "icon_url").writeNullable[String]
-    )(o => (o.userId, o.accountId, o.email, o.displayName, o.introduction, o.iconUrl))
+      (JsPath \ "icon_image_key").writeNullable[String]
+    )(o => (o.userId, o.accountId, o.email, o.displayName, o.introduction, o.iconImageKey))
 
   def from(user: User): UserOutput = UserOutput(
     user.id.toInt,
@@ -28,7 +28,7 @@ object UserOutput:
     user.email,
     user.displayName,
     Some(user.introduction),
-    user.iconUrl,
+    user.iconImageKey,
   )
 
 case class UserRegisterInput(accountId: String,
@@ -36,7 +36,7 @@ case class UserRegisterInput(accountId: String,
                              password: String,
                              displayName: String,
                              introduction: Option[String],
-                             iconUrl: Option[String])
+                             iconImageKey: Option[String])
 
 object UserRegisterInput:
   implicit val reads: Reads[UserRegisterInput] = (
@@ -45,7 +45,7 @@ object UserRegisterInput:
       (JsPath \ "password").read[String] ~
       (JsPath \ "display_name").read[String] ~
       (JsPath \ "introduction").readNullable[String] ~
-      (JsPath \ "icon_url").readNullable[String]
+      (JsPath \ "icon_image_key").readNullable[String]
     )(UserRegisterInput.apply _)
 
 case class UserSignInInput(email: String, password: String)

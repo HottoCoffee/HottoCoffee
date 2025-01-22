@@ -5,4 +5,4 @@ case class User(id: Long,
                 email: String,
                 displayName: String,
                 introduction: String,
-                iconUrl: String | Null)
+                iconImageKey: String | Null) // TODO: UUID type
