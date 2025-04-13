@@ -1,5 +1,15 @@
 # README
 
+## Requirement
+
+- sbt 1.9.6
+- Java 21
+
+## Local development
+
+1. `docker compose up -d mysql`
+2. `sbt run`
+
 ## Deploy
 
 1. `sbt dist`
