@@ -35,7 +35,7 @@ class UserAuthController @Inject()(val controllerComponents: ControllerComponent
               validPlainPassword,
               body.displayName,
               body.introduction.orElse(""),
-              body.iconUrl,
+              body.iconImageKey,
             ) match
               case Left(errorMessage) =>
                 logger.warn(errorMessage)

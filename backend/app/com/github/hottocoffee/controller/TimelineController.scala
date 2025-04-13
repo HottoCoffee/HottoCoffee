@@ -52,7 +52,7 @@ class TimelineController @Inject()(val controllerComponents: ControllerComponent
         userId = user.id.toInt,
         accountId = user.accountId,
         displayName = user.displayName,
-        iconUrl = user.iconUrl,
+        iconUrl = user.iconImageKey,
       ),
       location,
       origin,
