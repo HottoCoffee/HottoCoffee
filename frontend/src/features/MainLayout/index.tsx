@@ -9,7 +9,7 @@ export const MainLayout = () => {
       <Suspense
         fallback={
           <div className="w-screen h-screen flex justify-center items-center">
-            <IoIosCafe size={52} className="text-amber-700" />
+            <IoIosCafe size={52} className="text-primary" />
           </div>
         }
       >

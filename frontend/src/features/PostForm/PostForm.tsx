@@ -35,7 +35,7 @@ export const PostForm = (props: Props) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(props.onSubmit)}
-        className="space-y-2 p-4 dark"
+        className="space-y-2 p-4"
       >
         <h1>コーヒーの記録を投稿</h1>
 
@@ -92,7 +92,7 @@ export const PostForm = (props: Props) => {
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
-                  <SelectTrigger className="w-[180px]">
+                  <SelectTrigger>
                     <SelectValue placeholder="選択してください" />
                   </SelectTrigger>
                   <SelectContent>
@@ -165,7 +165,7 @@ export const PostForm = (props: Props) => {
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
-                  <SelectTrigger className="w-[180px]">
+                  <SelectTrigger>
                     <SelectValue placeholder="選択してください" />
                   </SelectTrigger>
                   <SelectContent>

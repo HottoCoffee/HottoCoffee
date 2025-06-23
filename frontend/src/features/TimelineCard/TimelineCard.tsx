@@ -1,5 +1,7 @@
 import { Post } from "@/api/interfaces";
 import * as Accordion from "@radix-ui/react-accordion";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
+import { cn } from "@/lib/utils";
 
 type Props = {
   post: Post;
@@ -9,7 +11,7 @@ export const TimelineCard = (props: Props) => {
   const { post } = props;
 
   return (
-    <div className="mx-auto bg-white p-4 w-full">
+    <div className="mx-auto bg-card text-card-foreground p-4 w-full rounded-lg border">
       <div className="flex items-center space-x-4">
         {/* TODO: Set profile image */}
         {/* <img
@@ -20,7 +22,7 @@ export const TimelineCard = (props: Props) => {
         <div>
           <h2 className="text-lg font-semibold">
             {post.user_info?.display_name}
-            <span className="text-gray-500">
+            <span className="text-muted-foreground">
               {" "}
               @{post.user_info?.account_id}
             </span>
@@ -31,7 +33,7 @@ export const TimelineCard = (props: Props) => {
         {post.location && (
           <div className="flex items-center space-x-2">
             <svg
-              className="w-5 h-5 text-gray-500"
+              className="w-5 h-5 text-muted-foreground"
               fill="currentColor"
               viewBox="0 0 24 24"
             >
@@ -43,7 +45,7 @@ export const TimelineCard = (props: Props) => {
 
         <div className="flex items-center space-x-2 mt-2">
           <svg
-            className="w-5 h-5 text-gray-500"
+            className="w-5 h-5 text-muted-foreground"
             fill="currentColor"
             viewBox="0 0 24 24"
           >
@@ -56,7 +58,7 @@ export const TimelineCard = (props: Props) => {
         {post.grind_size && (
           <div className="flex items-center space-x-2 mt-2">
             <svg
-              className="w-5 h-5 text-red-500"
+              className="w-5 h-5 text-destructive"
               fill="currentColor"
               viewBox="0 0 24 24"
             >
@@ -68,7 +70,7 @@ export const TimelineCard = (props: Props) => {
         {post.way_to_brew && (
           <div className="flex items-center space-x-2 mt-2">
             <svg
-              className="w-5 h-5 text-black"
+              className="w-5 h-5 text-card-foreground"
               fill="currentColor"
               viewBox="0 0 24 24"
             >
@@ -78,16 +80,25 @@ export const TimelineCard = (props: Props) => {
           </div>
         )}
         {post.impression && (
-          <p className="mt-4 text-gray-700">{post.impression}</p>
+          <p className="mt-4 text-card-foreground">{post.impression}</p>
         )}
       </div>
-      <Accordion.Root type="single" collapsible className="mt-2">
-        <Accordion.Item value="details">
-          <Accordion.Header>
-            <Accordion.Trigger>詳細を表示</Accordion.Trigger>
+      <Accordion.Root type="single" collapsible className="w-full mt-2">
+        <Accordion.Item value="details" className="border-b">
+          <Accordion.Header className="flex">
+            <Accordion.Trigger
+              className={cn(
+                "flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180"
+              )}
+            >
+              詳細を表示
+              <ChevronDownIcon className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200" />
+            </Accordion.Trigger>
           </Accordion.Header>
-          <Accordion.Content>
-            <p>hoge</p>
+          <Accordion.Content className="overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
+            <div className="pb-4 pt-0">
+              <p>hoge</p> {/* Assuming this is placeholder content */}
+            </div>
           </Accordion.Content>
         </Accordion.Item>
       </Accordion.Root>

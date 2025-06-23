@@ -41,8 +41,8 @@ export const Menu = () => {
 
   return (
     <nav
-      className="flex justify-around items-center w-full bg-white rounded-lg shadow-md p-2 fixed bottom-3 m-auto left-0 right-0"
-      style={{ viewTransitionName: "menu", maxWidth: "calc(100vw - 20px)" }}
+      className="flex justify-around items-center w-full bg-background rounded-lg shadow-md p-2 fixed bottom-3 m-auto left-0 right-0"
+      style={{ viewTransitionName: "menu", maxWidth: "calc(100vw - 1.25rem)" }}
     >
       {PATHS.map((path) => {
         return (
@@ -60,7 +60,7 @@ export const Menu = () => {
               );
             }}
             className={clsx("flex gap-2 items-center", {
-              "shadow-inner-strong": currentPath === path.path,
+              "bg-accent text-accent-foreground": currentPath === path.path,
             })}
           >
             {path.icon}
